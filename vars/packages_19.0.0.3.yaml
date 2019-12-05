@@ -1,0 +1,4 @@
+package_name :
+ - bc
+ - binutils
+ - elfutils-libelf
