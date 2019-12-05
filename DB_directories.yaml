@@ -1,7 +1,7 @@
 --- 
  - name: Including package
    include_vars:
-    file: ICC_dbinstal.yaml
+    file: db_install_{{ oracle_version }}.yaml
 
  - name: create  directories
    file:
