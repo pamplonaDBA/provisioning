@@ -1,0 +1,56 @@
+<<<<<<< HEAD
+#  Pamplona 2019
+#  Playbook which sends a respone file and uses it ro install a database
+#
+# requires
+#   env:                                     name of the server  which should be in the inventory
+#   files/[db|asm]_install_[version].yaml  : configuration file with the variables 
+=======
+>>>>>>> b79c70217306441aea820ff543bf9eaa3fc6c12c
+---
+- hosts: "{{env}}"
+  remote_user: ansible
+  become: yes
+  become_user: root
+  tasks:
+  
+  - name: Including data
+    include_vars:
+      file: "{{type}}_install_{{ version }}.yaml"
+   
+<<<<<<< HEAD
+  - name: generate response file
+    template:
+     src: "templates/{{ response_file }}.j2"
+     dest: "{{ stage_directory }}/{{response_file}}"
+     mode: '0644'
+## commented due posiible ansible/chown bug in OEL8
+### we workarround it with mode +R
+##     owner: "{{ oracle_user }} "
+##     group: "{{ oracle_group }}"
+    
+## to improve, check if {{ oracle_home }}/runInstaller exsists
+##
+  - name: Install Oracle 19c Database Software
+    shell: "{{ oracle_home }}/runInstaller -silent -responseFile {{ stage_directory }}/{{response_file}} -noconfig -ignorePrereqFailure"
+    args:
+      chdir: "{{ oracle_home }}"
+      creates: "/var/tmp/instalacion.txt"
+    environment:
+       CV_ASSUME_DISTID: OEL7.6
+=======
+  - name: Copy response file 
+    copy:
+     src: "files/{{ response_file }}"
+     dest: "{{ stage_directory }}/{{response_file}}"
+     owner: "{{ oracle_user }} "
+     group: "{{ oracle_group }}"
+    
+
+  - name: Install Oracle 19c Database Software
+    shell: "{{ oracle_home }}/runInstaller -silent -responseFile {{ stage_directory }}/{{response_file}} -noconfig -ignorePrereqFailure"
+>>>>>>> b79c70217306441aea820ff543bf9eaa3fc6c12c
+    become: yes
+    become_user: "{{ oracle_user }}"
+    ignore_errors: True
+

@@ -1,0 +1,46 @@
+# Pamplona 2019 
+#  Playbook which unzips the requeted file 
+#    
+#     requires
+#       env:                                  name of the server  which should be in the inventory
+#       type:                                 type of installation [asm|db]    
+#       files/[type]_install_[version].yaml   configuration file with the  variables requested for the extraction
+#
+---
+- hosts: "{{env}}"
+  remote_user: ansible
+  become: yes
+  become_user: root
+  tasks:
+  - fail: msg="Error no server definied, please define the env variable in the job"
+    when: env is not defined
+
+  - name: Including package
+    include_vars:
+      file: "{{type}}_install_{{ version }}.yaml"
+
+  - name: check for required binaries
+    stat:
+     path: "{{media_dir}}/{{binary_name}}"
+    register: exsists
+
+  - debug:
+      msg: The file is availabe 
+    when: exsists.stat.readable == True
+
+## phase 2: Add check for
+#   MD5
+
+  - fail:
+      msg: "ERROR: Source zip file not found"
+    when: exsists.stat.readable ==  False
+    ignore_errors: False 
+
+  - name: Extract "{{media_dir}}/{{binary_name}}  {{ oracle_home }}"
+    unarchive:
+     src: "{{media_dir}}/{{binary_name}}"
+     remote_src: yes
+     dest: "{{ oracle_home }}"
+    become: yes
+    become_user: "{{ oracle_user}}"
+

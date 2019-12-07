@@ -1,0 +1,22 @@
+root_user:                      "root"
+oracle_user:                    "oracle"
+oracle_group:                   "dba"
+<<<<<<< HEAD
+media_dir:                      "/mnt/media"
+root_directory:                 "/u01/app"
+oracle_inventory:               "{{root_directory}}/oraInventory"
+oracle_base:                    "{{root_directory}}/oracle"
+stage_directory:                "{{oracle_base}}/stage"
+oracle_home:                    "{{oracle_base}}/product/{{version}}/dbhome1"
+response_file:                  "db_binaries_19.0.0.3.rsp"
+binary_name:                    "LINUX.X64_193000_db_home.zip"
+=======
+stage_dir:                      "/mnt/media"
+root_directory:                 "/u01/app"
+oracle_base:                    "{{root_directory}}/oracle"
+scripts_directory:              "{{oracle_base}}/scripts"
+oracle_home:                    "{{oracle_base}}/product/{{version}}"
+oracle_inventory:               "{{oracle_base}}/u01/app/oraInventory"
+response_file:                  "{{oracle_version}.rsp"
+oracle_file:                    "LINUX.X64_193000_db_home.zip"
+>>>>>>> b79c70217306441aea820ff543bf9eaa3fc6c12c
