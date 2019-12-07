@@ -1,0 +1,8 @@
+package_name :
+ - bc
+ - binutils
+<<<<<<< HEAD
+ - elfutils-libelf
+=======
+ - elfutils-libelf
+>>>>>>> b79c70217306441aea820ff543bf9eaa3fc6c12c
