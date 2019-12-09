@@ -5,7 +5,7 @@
 #   env:                                     name of the server  which should be in the inventory
 #   SID:                                     Oracle SID
 #   version:                                 Version of the database
-#   files/[db|asm]_install_[version].yaml  : configuration file with the variables 
+#   files/[type]_install_[version].yaml  : configuration file with the specific values for SID creation
 #
 
 ---
@@ -23,25 +23,38 @@
 
   - name: Including generic database type data 
     include_vars:
-      file: "{{type}}_install_{{ version }}.yaml"
+      file: "vars/{{type}}_install_{{ version }}.yaml"
 
-  - name: specific SID daa 
+  - name: specific  SID variables 
     include_vars:
-      file: "specific/{{type}}_createb{{ SID }}.yaml"
+      file: "files/{{type}}_createdb_{{ SID }}.yaml"
 
   - name: generate response file
+    become: yes
+    become_user: "{{ oracle_user}}"
     template:
-     src: "templates/templates/db_createdb_{{version}}.j2"
+     src: "templates/db_createdb_{{version}}.rsp.j2"
      dest: "{{ stage_directory }}/db_create_{{SID}}.rsp"
      mode: '0644'
-        ## commented due posiible ansible/chown bug in OEL8
-        #### we workarround it with mode +R
-        ###     owner: "{{ oracle_user }} "
-        ###     group: "{{ oracle_group }}"
 
   - name: check if oracle SID exsists
+    become: yes 
+    become_user: "{{ oracle_user}}" 
     lineinfile:
         path : /etc/oratab
-        line=: "{{ SID }}:"
-        check_mode: yes  
+        line: "{{ SID }}:"
+        state: present
+    check_mode: yes  
+    register: exsisted
+  - fail:
+      msg: "ERROR: {{SID}} already registered on oratab fie at {{env}}"
+    when: exsisted is not defined 
+  
+
+  - name: add oratab entry 
+    become: yes
+    become_user: "{{root_user}}"
+    lineinfile:
+        path : /etc/oratab
+        line: "{{ SID }}:{{oracle_home}}:Y"
 

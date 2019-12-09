@@ -1,9 +1,9 @@
 database_type: "SI"
-sysPassword : changeme#2019
-systemPassword: changeme#2019
-dbsnmpPassword: changeme#2019
-datafileDestination: /oradata/{{SID}}/data
-recoveryAreaDestination: /oradata/{{SID}}FRA
+sysPassword : "changeme#2019"
+systemPassword: "changeme#2019"
+dbsnmpPassword: "changeme#2019"
+datafileDestination: "/oradata/{{SID}}/data"
+recoveryAreaDestination: "/oradata/{{SID}}/FRA"
 storageType: "FS"
 diskGroupName: 
 asmsnmpPassword: 
