@@ -1,0 +1,47 @@
+#  Pamplona 2019
+#  Playbook which creates a database
+#
+# requires
+#   env:                                     name of the server  which should be in the inventory
+#   SID:                                     Oracle SID
+#   version:                                 Version of the database
+#   files/[db|asm]_install_[version].yaml  : configuration file with the variables 
+#
+
+---
+- hosts: "{{env}}"
+  remote_user: ansible
+  become: yes
+  become_user: root
+  tasks:
+
+  - fail: msg="Error no server definied, please define the env variable in the job"
+    when: env is not defined
+
+  - fail: msg="Error no version definied, please define the version variable in the job"
+    when: version is not defined
+
+  - name: Including generic database type data 
+    include_vars:
+      file: "{{type}}_install_{{ version }}.yaml"
+
+  - name: specific SID daa 
+    include_vars:
+      file: "specific/{{type}}_createb{{ SID }}.yaml"
+
+  - name: generate response file
+    template:
+     src: "templates/templates/db_createdb_{{version}}.j2"
+     dest: "{{ stage_directory }}/db_create_{{SID}}.rsp"
+     mode: '0644'
+        ## commented due posiible ansible/chown bug in OEL8
+        #### we workarround it with mode +R
+        ###     owner: "{{ oracle_user }} "
+        ###     group: "{{ oracle_group }}"
+
+  - name: check if oracle SID exsists
+    lineinfile:
+        path : /etc/oratab
+        line=: "{{ SID }}:"
+        check_mode: yes  
+
