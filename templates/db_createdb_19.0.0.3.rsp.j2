@@ -29,7 +29,8 @@ responseFileVersion=/oracle/assistants/rspfmt_dbca_response_schema_v19.0.0
 # Default value : None
 # Mandatory     : Yes
 #-----------------------------------------------------------------------------
-gdbName=
+gdbName={{ SID }}
+
 
 #-----------------------------------------------------------------------------
 # Name          : sid
@@ -220,7 +221,7 @@ nodelist=
 # Default value : None
 # Mandatory     : Yes
 #-----------------------------------------------------------------------------
-templateName=
+templateName=General_Purpose.dbc
 
 #-----------------------------------------------------------------------------
 # Name          : sysPassword
@@ -230,7 +231,7 @@ templateName=
 # Default value : None
 # Mandatory     : Yes
 #-----------------------------------------------------------------------------
-sysPassword=
+sysPassword={{sysPassword}}
 
 #-----------------------------------------------------------------------------
 # Name          : systemPassword
@@ -240,7 +241,7 @@ sysPassword=
 # Default value : None
 # Mandatory     : Yes
 #-----------------------------------------------------------------------------
-systemPassword= 
+systemPassword={{systemPassword}}
 
 #-----------------------------------------------------------------------------
 # Name          : oracleHomeUserPassword
@@ -408,7 +409,7 @@ datafileJarLocation=
 # Default value : $ORACLE_BASE/oradata
 # Mandatory     : No
 #-----------------------------------------------------------------------------
-datafileDestination= {{datafileDestination}}
+datafileDestination={{datafileDestination}}
 
 #-----------------------------------------------------------------------------
 # Name          : recoveryAreaDestination

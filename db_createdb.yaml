@@ -51,10 +51,13 @@
     when: exsisted is not defined 
   
 
-  - name: add oratab entry 
+  - name: createdb 
     become: yes
-    become_user: "{{root_user}}"
-    lineinfile:
-        path : /etc/oratab
-        line: "{{ SID }}:{{oracle_home}}:Y"
+    become_user: "{{oracle_user}}"    
+    shell: "{{ oracle_home }}/bin/dbca -silent -createDatabase  -ignorePreReqs -responseFile {{ stage_directory }}/db_create_{{SID}}.rsp"
+    args:
+      chdir: "{{ oracle_home }}"
+    environment:
+       CV_ASSUME_DISTID: OEL7.6
+
 
