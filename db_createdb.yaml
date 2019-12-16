@@ -29,6 +29,14 @@
     include_vars:
       file: "files/{{type}}_createdb_{{ SID }}.yaml"
 
+  - name: checking oratab
+    shell: "cat /etc/oratab|grep {{SID}}|sed -e 's/# line added by Agent/ /g' -e 's/:/ /g'|wc -l "
+    register: count
+  
+  - fail: 
+      msg: "ERROR: The chain {{SID}} is  {{count.stdout}} times at {{env}}  /etc/oratab file "
+    when: count.stdout != "0"
+
   - name: generate response file
     become: yes
     become_user: "{{ oracle_user}}"
@@ -37,19 +45,6 @@
      dest: "{{ stage_directory }}/db_create_{{SID}}.rsp"
      mode: '0644'
 
-  - name: check if oracle SID exsists
-    become: yes 
-    become_user: "{{ oracle_user}}" 
-    lineinfile:
-        path : /etc/oratab
-        line: "{{ SID }}:"
-        state: present
-    check_mode: yes  
-    register: exsisted
-  - fail:
-      msg: "ERROR: {{SID}} already registered on oratab fie at {{env}}"
-    when: exsisted is not defined 
-  
 
   - name: createdb 
     become: yes

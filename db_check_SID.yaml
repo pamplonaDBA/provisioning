@@ -1,0 +1,30 @@
+# Pamplona 2019 
+#  Playbook which checks if the SID exsists at server ENV
+#   This is a control playbook, if the result is not true it will exsist with FAIL
+#  requires
+#    env:                             name of the server  which should be in the inventory
+#    SID:                               oracle SID defined at /etc/oratab
+---
+- hosts: alone.pamplona.name
+  remote_user: ansible
+  become: yes
+  become_user: root
+  tasks:
+## Checking prereequisites
+  - fail: msg="Error no server definied, please define the env variable in the job"
+    when: env is not defined
+  - fail: msg="Error no SID definied, please define the SID variable in the job"
+    when: SID is not defined
+##
+## it should work with lineinfile, but this module fails in OEL8 so we check it with shell 
+##
+
+  - name: checking oratab
+    shell: "cat /etc/oratab|grep {{SID}}|sed -e 's/# line added by Agent/ /g' -e 's/:/ /g'|wc -l "
+    register: count
+  
+  - fail: 
+      msg: "ERROR: The chain {{SID}} is  {{count.stdout}} times at {{env}}  /etc/oratab file "
+    when: count.stdout != "0"
+
+
