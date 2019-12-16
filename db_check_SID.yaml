@@ -5,16 +5,14 @@
 #    env:                             name of the server  which should be in the inventory
 #    SID:                               oracle SID defined at /etc/oratab
 ---
-- hosts: alone.pamplona.name
+- hosts: "{{env}}"
   remote_user: ansible
   become: yes
   become_user: root
   tasks:
 ## Checking prereequisites
-  - fail: msg="Error no server definied, please define the env variable in the job"
-    when: env is not defined
-  - fail: msg="Error no SID definied, please define the SID variable in the job"
-    when: SID is not defined
+  - fail: msg="Error no server or SID  definied"
+    when:  env is not defined  or SID is not defined 
 ##
 ## it should work with lineinfile, but this module fails in OEL8 so we check it with shell 
 ##
@@ -24,7 +22,7 @@
     register: count
   
   - fail: 
-      msg: "ERROR: The chain {{SID}} is  {{count.stdout}} times at {{env}}  /etc/oratab file "
+      msg: "ERROR: The chain {{item}} exsists at {{env}}  /etc/oratab file "
     when: item ==  "{{SID}}"
     with_items: 
      - "{{count.stdout_lines}}"
