@@ -3,7 +3,7 @@ sysPassword : "SYSchangeme#2019.."
 systemPassword: "SYSTEMchangeme#2019.."
 dbsnmpPassword: "DBSNMPchangeme#2019.."
 datafileDestination: "/oradata"
-recoveryAreaDestination: "/oradata/{{SID}}/fra"
+r coveryAreaDestination: "/oradata/{{SID}}/fra"
 storageType: "FS"
 diskGroupName: 
 asmsnmpPassword: 
@@ -11,4 +11,4 @@ recoveryGroupName:
 characterSet: "US7ASCII"
 nationalCharacterSet: "AL16UTF16"
 totalMemory: "2014"
-
+initParams: "DB_CREATE_FILE_DEST= /oradata/{{SID}}/data, DB_CREATE_ONLINE_LOG_DEST_1=/oradata/{{SID}/redo,DB_CREATE_ONLINE_LOG_DEST_2=/oradata/{{SID}/redo"

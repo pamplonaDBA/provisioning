@@ -15,11 +15,9 @@
   become_user: root
   tasks:
 
-  - fail: msg="Error no server definied, please define the env variable in the job"
-    when: env is not defined
-
-  - fail: msg="Error no version definied, please define the version variable in the job"
-    when: version is not defined
+  - fail: 
+     msg: "ERROR: SOME VARIABLE NOT DEFINED: Please define   env , version and SID variables "
+    when: env is not defined or version is not defined or SID is not defined 
 
   - name: Including generic database type data 
     include_vars:
@@ -30,12 +28,17 @@
       file: "files/{{type}}_createdb_{{ SID }}.yaml"
 
   - name: checking oratab
-    shell: "cat /etc/oratab|grep {{SID}}|sed -e 's/# line added by Agent/ /g' -e 's/:/ /g'|wc -l "
+    shell: "cat /etc/oratab|grep {{SID}}|sed -e 's/# line added by Agent/ /g' -e 's/:/ /g'|awk '{ print $1}' "
     register: count
-  
+
   - fail: 
-      msg: "ERROR: The chain {{SID}} is  {{count.stdout}} times at {{env}}  /etc/oratab file "
-    when: count.stdout != "0"
+      msg: "ERROR: The chain {{item}} exsists at  {{env}}  /etc/oratab file "
+    when: item ==  "{{SID}}"
+    with_items: 
+     - "{{count.stdout_lines}}"
+
+
+
 
   - name: generate response file
     become: yes
