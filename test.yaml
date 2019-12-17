@@ -1,5 +1,5 @@
 #  Pamplona 2019
-#  Playbook which creates a database
+#   test playbook for short commands
 #
 # requires
 #   env:                                     name of the server  which should be in the inventory
@@ -27,18 +27,7 @@
     include_vars:
       file: "files/{{type}}_createdb_{{ SID }}.yaml"
 
-  - name: checking oratab
-    shell: "cat /etc/oratab|grep {{SID}}|sed -e 's/# line added by Agent/ /g' -e 's/:/ /g'|awk '{ print $1}' "
-    register: count
-
-  - fail: 
-      msg: "ERROR: The chain {{item}} exsists at  {{env}}  /etc/oratab file "
-    when: item ==  "{{SID}}"
-    with_items: 
-     - "{{count.stdout_lines}}"
-
-
-  - name: Checking if exsists FS directories before create database
+  - name: Checking if exsists FS directories before create database 
     stat:
      path: "{{ item }}"
     register: file_details
@@ -51,23 +40,12 @@
       msg: "ERROR: Directory {{item.item}}  do not exsists"
     when: "item.stat.exists != True"
     with_items: "{{ file_details.results }}"
+  
 
-  - name: generate response file
-    become: yes
-    become_user: "{{ oracle_user}}"
-    template:
-     src: "templates/db_createdb_{{version}}.rsp.j2"
-     dest: "{{ stage_directory }}/db_create_{{SID}}.rsp"
-     mode: '0644'
-
-
-  - name: createdb 
-    become: yes
-    become_user: "{{oracle_user}}"    
-    shell: "{{ oracle_home }}/bin/dbca -silent -createDatabase  -ignorePreReqs -responseFile {{ stage_directory }}/db_create_{{SID}}.rsp"
-    args:
-      chdir: "{{ oracle_home }}"
-    environment:
-       CV_ASSUME_DISTID: OEL7.6
+ 
+  #- fail: 
+  #    msg: "ERROR: Directory {{item.item}} , tenemos que exsists {{item.stat.exsist}}do not exsists"
+  #  when:  item.stat.exsists is false
+  #  with_items: "{{ file_details.results }}"
 
 
