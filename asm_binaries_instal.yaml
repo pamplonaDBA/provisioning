@@ -22,7 +22,7 @@
      mode: '0644'
 
 
- - name: Install Grid  19c Software
+  - name: Install Grid  19c Software
     shell: "{{ oracle_home }}/gridSetup.sh  -silent -responseFile {{ stage_directory }}/{{response_file}}"
     become: yes
     become_user: "{{ oracle_user }}"
@@ -30,7 +30,7 @@
      chdir: "{{ oracle_home }}"
     ignore_errors: True
 
- - name: Configure CRS 
+  - name: Configure CRS 
     shell: $GI_HOME/perl/bin/perl -I $GI_HOME/perl/lib -I $GI_HOME/crs/install $GI_HOME/crs/install/roothas.pl
     become: yes
     become_user: root
