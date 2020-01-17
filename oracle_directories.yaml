@@ -5,11 +5,12 @@
 #     env:                                  name of the server  which should be in the inventory
 #     type:                                 type of installation [asm|db]    
 #     files/[type]_install_[version].yaml   configuration file with the  variables requested for the installation
+#     ignore                                if it can ignore errors 
 ---
 - hosts: "{{env}}"
   remote_user: ansible
   become: yes
-  become_user: root
+  become_user: oracle
   tasks:
   - fail: msg="Error no server definied, please define the env variable in the job"
     when: env is not defined
