@@ -31,32 +31,13 @@
      owner: "{{ oracle_user }} "
      group: "{{ oracle_user }} "
 
-## commented due posiible ansible/chown bug in OEL8
-### we workarround it with mode +R
-##     owner: "{{ oracle_user }} "
-##     group: "{{ oracle_group }}"
-    
-
-## to improve, check if {{ oracle_home }}/runInstaller exsists
-##
-#  - name: Install Oracle 19c Database Software
-#    shell: "{{ oracle_home }}/runInstaller -silent -responseFile {{ stage_directory }}/{{response_file}} -noconfig -ignorePrereqFailure"
-#    args:
-#      chdir: "{{ oracle_home }}"
-#      creates: "/var/tmp/instalacion.txt"
-#    environment:
-#       CV_ASSUME_DISTID: OEL7.6
-#    copy:
-#     src: "files/{{ response_file }}"
-#     dest: "{{ stage_directory }}/{{response_file}}"
-#     owner: "{{ oracle_user }} "
-#     group: "{{ oracle_group }}"
-#    
 #
-#  - name: Install Oracle 19c Database Software
+# - name: Install Grid  19c Software
 #    shell: "{{ oracle_home }}/runInstaller -silent -responseFile {{ stage_directory }}/{{response_file}} -noconfig -ignorePrereqFailure"
 #    become: yes
 #    become_user: "{{ oracle_user }}"
+#    args:
+#     chdir: "{{ oracle_home }}"
 #    ignore_errors: True
-#
-#
+
+

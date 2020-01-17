@@ -3,7 +3,8 @@
 #  
 #  requires
 #    env:                             name of the server  which should be in the inventory
-#    files/ipackages_[version].yaml   configuration file with the paqueges required for this version of the database
+#    type:                            type of installation [asm|db]   
+#    vars/packages_[type]_[version].yaml   configuration file with the packages required for this version of the software
 ---
 - hosts: "{{env}}"
   remote_user: ansible
@@ -15,7 +16,7 @@
 
   - name: Including package
     include_vars:
-     file: "packages_{{version}}.yaml"
+     file: "packages_{{type}}_{{version}}.yaml"
 
   - name: check packages "{{package_name}}"
     yum:

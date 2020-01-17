@@ -1,0 +1,6 @@
+package_name :
+ - binutils
+ - elfutils-libelf
+ - elfutils-libelf
+ - oracleasm
+ - oracleasm-support
