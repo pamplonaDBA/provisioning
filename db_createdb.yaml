@@ -49,7 +49,7 @@
       - "/oradata/{{ SID }}/redo"
   - fail: 
       msg: "ERROR: Directory {{item.item}}  do not exsists"
-    when: "item.stat.exists != True"
+    when: "item.stat.exists != True" 
     with_items: "{{ file_details.results }}"
 
   - name: generate response file

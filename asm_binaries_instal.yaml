@@ -20,16 +20,22 @@
      src: "templates/{{ response_file }}.j2"
      dest: "{{ stage_directory }}/{{response_file}}"
      mode: '0644'
-     owner: "{{ oracle_user }}"
-     group: "{{ oracle_user }}"
-
-#
-# - name: Install Grid  19c Software
-#    shell: "{{ oracle_home }}/runInstaller -silent -responseFile {{ stage_directory }}/{{response_file}} -noconfig -ignorePrereqFailure"
-#    become: yes
-#    become_user: "{{ oracle_user }}"
-#    args:
-#     chdir: "{{ oracle_home }}"
-#    ignore_errors: True
 
 
+ - name: Install Grid  19c Software
+    shell: "{{ oracle_home }}/gridSetup.sh  -silent -responseFile {{ stage_directory }}/{{response_file}}"
+    become: yes
+    become_user: "{{ oracle_user }}"
+    args:
+     chdir: "{{ oracle_home }}"
+    ignore_errors: True
+
+ - name: Configure CRS 
+    shell: $GI_HOME/perl/bin/perl -I $GI_HOME/perl/lib -I $GI_HOME/crs/install $GI_HOME/crs/install/roothas.pl
+    become: yes
+    become_user: root
+    args:
+     chdir: "{{ oracle_home }}"
+    environment:
+      GI_HOME: "{{ oracle_home }}"
+    ignore_errors: True
