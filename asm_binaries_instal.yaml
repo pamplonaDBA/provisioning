@@ -1,9 +1,9 @@
 #  Pamplona 2019
-#  Playbook which sends a respone file and uses it ro install a database
+#  Playbook which sends a respone file and  uses it to install  Oracle restart/ CRS  / Grid on alone server
 #
 # requires
 #   env:                                     name of the server  which should be in the inventory
-#   files/[db|asm]_install_[version].yaml  : configuration file with the variables 
+#   files/asm_install_[version].yaml  : configuration file with the variables 
 ---
 - hosts: "{{env}}"
   remote_user: ansible
@@ -15,21 +15,13 @@
     include_vars:
       file: "{{type}}_install_{{ version }}.yaml"
    
- - name: check asm packages installed
-    yum:
-      name: "{{package_name}}"
-      state: latest
-    with_items:
-       - oracleasm-support
-       - oracleasmlib
-
   - name: generate response file
     template:
      src: "templates/{{ response_file }}.j2"
      dest: "{{ stage_directory }}/{{response_file}}"
      mode: '0644'
-     owner: "{{ oracle_user }} "
-     group: "{{ oracle_user }} "
+     owner: "{{ oracle_user }}"
+     group: "{{ oracle_user }}"
 
 #
 # - name: Install Grid  19c Software
