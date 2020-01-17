@@ -20,6 +20,6 @@
   - name: check packages "{{package_name}}"
     yum:
       name: "{{package_name}}"
-      state: present
+      state: latest
     with_items:
       - "{{ package_name }}"

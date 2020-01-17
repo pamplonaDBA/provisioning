@@ -15,17 +15,28 @@
     include_vars:
       file: "{{type}}_install_{{ version }}.yaml"
    
+ - name: check asm packages installed
+    yum:
+      name: "{{package_name}}"
+      state: latest
+    with_items:
+       - oracleasm-support
+       - oracleasmlib
+
   - name: generate response file
     template:
      src: "templates/{{ response_file }}.j2"
      dest: "{{ stage_directory }}/{{response_file}}"
      mode: '0644'
+     owner: "{{ oracle_user }} "
+     group: "{{ oracle_user }} "
 
 ## commented due posiible ansible/chown bug in OEL8
 ### we workarround it with mode +R
 ##     owner: "{{ oracle_user }} "
 ##     group: "{{ oracle_group }}"
     
+
 ## to improve, check if {{ oracle_home }}/runInstaller exsists
 ##
 #  - name: Install Oracle 19c Database Software
