@@ -46,3 +46,37 @@
     environment:
       GI_HOME: "{{ oracle_home }}"
     ignore_errors: True
+
+  - name: Create listener
+    shell: "$GI_HOME/bin/srvctl add listener -listener LISTENER  -oraclehome  {{ oracle_home }}" 
+    become: yes
+    become_user: "{{oracle_user}}"
+    args:
+     chdir: "{{ oracle_home }}"
+    environment:
+      GI_HOME: "{{ oracle_home }}"
+      ORACLE_BASE: "{{ oracle_base}}"
+    ignore_errors: False
+
+- name: Enable listener
+    shell: $GI_HOME/bin/srvctl enable listener -listener LISTENER 
+    become: yes
+    become_user: "{{oracle_user}}"
+    args:
+     chdir: "{{ oracle_home }}"
+    environment:
+      GI_HOME: "{{ oracle_home }}"
+      ORACLE_BASE: "{{ oracle_base}}"
+    ignore_errors: True
+
+- name: Start listener
+    shell: $GI_HOME/bin/srvctl start listener -listener LISTENER 
+    become: yes
+    become_user: "{{oracle_user}}"
+    args:
+     chdir: "{{ oracle_home }}"
+    environment:
+      GI_HOME: "{{ oracle_home }}"
+      ORACLE_BASE: "{{ oracle_base}}"
+    ignore_errors: False
+
