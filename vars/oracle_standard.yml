@@ -9,7 +9,8 @@ stage_directory:                "{{oracle_base}}/stage"
 oracle_home_directory:
   db:                           "{{oracle_base}}/product/{{version}}/dbhome1"
   asm:                          "{{oracle_base}}/product/{{version}}/grid"
-data_location:
+response_file:                  "{{type}_{{action}}_{{version}}.rsp"
+data_location:          
  FS:                            "/oradata/{{SID}}/data"
  ASM:                           "+{{oracle_hostname}}/DATA"
 fra_location:
@@ -21,3 +22,5 @@ redo1_location:
 redo2_location:
   FS:                           "/oradata/{{SID}}/redo"
   ASM:                          "+{{oracle_hostname}}/REDO2"
+
+  
