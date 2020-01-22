@@ -13,6 +13,7 @@
   action: binaries
   tasks:
  # checking prerrequisites     
+ #d
    - fail: msg="Error no server definied, please define the env variable in the job"
        when: env is not defined
    - fail: msg="Error no server definied, please define the env variable in the job"

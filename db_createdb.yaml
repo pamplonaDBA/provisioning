@@ -12,6 +12,7 @@
   remote_user: ansible
   become: yes
   become_user: root
+  action: createdb
   tasks:
  # checking prerrequisites     
    - fail: msg="Error no server definied, please define the env variable in the job"

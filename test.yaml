@@ -21,11 +21,7 @@
 
   - name: Including generic database type data 
     include_vars:
-      file: "vars/{{type}}_install_{{ version }}.yaml"
-
-  - name: specific  SID variables 
-    include_vars:
-      file: "files/{{type}}_createdb_{{ SID }}.yaml"
+      file: "oracle_standard.yml"
 
   - name: Checking if exsists FS directories before create database 
     stat:

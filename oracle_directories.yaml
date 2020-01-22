@@ -16,8 +16,11 @@
 # checking prerrequisites     
   - fail: msg="Error no server definied, please define the env variable in the job"
     when: env is not defined
-  - fail: msg="Error no server definied, please define the env variable in the job"
-          when: env is not defined
+  - fail: msg="Error no server definied, please define the version variable in the job"
+    when: version is not defined
+  - fail: msg="Error no server definied, please define the type variable in the job"
+    when: type is not defined
+
 # End prerrequisites  + check var file for improvement
 
 # Loading env

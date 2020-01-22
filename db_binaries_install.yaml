@@ -11,12 +11,13 @@
   become: yes
   become_user: root
   type: db
+  action: binaries
   tasks:
  # checking prerrequisites     
    - fail: msg="Error no server definied, please define the env variable in the job"
        when: env is not defined
    - fail: msg="Error no server definied, please define the env variable in the job"
-        when: env is not defined
+        when: version is not defined
 # End prerrequisites  + check var file for improvement
 #
 # Loading env
@@ -27,13 +28,8 @@
    - name: adjusting oracle_home
        set_fact: "{{oracle_home}}" = "{{oracle_home_directory}}.{{type}}"
 
-  - name: Including data
-    include_vars:
-      file: "{{type}}_binaries.yaml"
 #
-#
-#
-   
+#   
   - name: generate response file
     template:
      src: "templates/{{ response_file }}.j2"
