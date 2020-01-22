@@ -1,20 +1,34 @@
-#  Pamplona 2019
+#  Pamplona 2020
 #  Playbook which sends a respone file and  uses it to install  Oracle restart/ CRS  / Grid on alone server
-#
-# requires
+#  requires
 #   env:                                     name of the server  which should be in the inventory
-#   files/asm_install_[version].yaml  : configuration file with the variables 
+#   version:                              version of database or asm
+#   vars/oracle_standard.yaml   standard values for Oracle
+#   vars/asm_binaries.yaml  : configuration file with the variables 
 ---
 - hosts: "{{env}}"
   remote_user: ansible
   become: yes
   become_user: root
+  type: asm 
   tasks:
+ # checking prerrequisites     
+   - fail: msg="Error no server definied, please define the env variable in the job"
+       when: env is not defined
+   - fail: msg="Error no server definied, please define the env variable in the job"
+        when: env is not defined
+# End prerrequisites  + check var file for improvement
+#
+# Loading env
+   - name: Including Standard_values
+     include_vars:
+      file: "oracle_standard.yaml"
   
-  - name: Including data
-    include_vars:
-      file: "{{type}}_install_{{ version }}.yaml"
-   
+   - name: adjusting oracle_home
+      set_fact: "{{oracle_home}}" = "{{oracle_home_directory}}.{{type}}"
+#
+#
+#
   - name: generate response file
     template:
      src: "templates/{{ response_file }}.j2"
@@ -30,7 +44,7 @@
      chdir: "{{ oracle_home }}"
     ignore_errors: True
 
-  - name: execute rot.sh
+  - name: execute root.sh
     shell: "{{ oracle_home }}/root.sh"
     become: yes
     become_user: root

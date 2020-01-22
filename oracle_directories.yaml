@@ -4,7 +4,8 @@
 #   requires
 #     env:                                  name of the server  which should be in the inventory
 #     type:                                 type of installation [asm|db]    
-#     files/[type]_install_[version].yaml   configuration file with the  variables requested for the installation
+#     version:                              version of database or asm
+#     vars/oracle_standard.yaml   standard values for Oracle
 #     ignore                                if it can ignore errors 
 ---
 - hosts: "{{env}}"
@@ -12,13 +13,21 @@
   become: yes
   become_user: oracle
   tasks:
+# checking prerrequisites     
   - fail: msg="Error no server definied, please define the env variable in the job"
     when: env is not defined
+  - fail: msg="Error no server definied, please define the env variable in the job"
+          when: env is not defined
+# End prerrequisites  + check var file for improvement
 
-  - name: Including package
+# Loading env
+  - name: Including Standard_values 
     include_vars:
-      file: "{{type}}_install_{{ version }}.yaml"
+      file: "oracle_standard.yaml"
 
+  - name: adjusting oracle_home
+    set_fact: "{{oracle_home}}" = "{{oracle_home_directory}}.{{type}}"
+#
   - name: create  directories
     file:
       path: "{{ item }}"

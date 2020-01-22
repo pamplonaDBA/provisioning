@@ -1,10 +1,12 @@
-# Pamplona 2019 
+# Pamplona 2020
 #  Playbook which unzips the requeted file 
 #    
 #     requires
 #       env:                                  name of the server  which should be in the inventory
 #       type:                                 type of installation [asm|db]    
-#       files/[type]_install_[version].yaml   configuration file with the  variables requested for the extraction
+#      version:                              version of database or asm
+#      vars/oracle_standard.yaml   standard values for Oracle
+#      vars/[type]_binaries.yaml   configuration file with the  variables requested for the extraction
 #
 ---
 - hosts: "{{env}}"
@@ -12,29 +14,37 @@
   become: yes
   become_user: root
   tasks:
-  - fail: msg="Error no server definied, please define the env variable in the job"
-    when: env is not defined
+# checking prerrequisites     
+   - fail: msg="Error no server definied, please define the env variable in the job"
+       when: env is not defined
+   - fail: msg="Error no server definied, please define the env variable in the job"
+        when: env is not defined
+# End prerrequisites  + check var file for improvement
+#
+# Loading env
+   - name: Including Standard_values 
+     include_vars:
+    file: "oracle_standard.yaml"
 
-  - name: Including package
+  - name: Including binaries info
     include_vars:
-      file: "{{type}}_install_{{ version }}.yaml"
-
+      file: "{{type}}_binaries.yaml"
   - name: check for required binaries
     stat:
      path: "{{media_dir}}/{{binary_name}}"
     register: exsists
-
   - debug:
       msg: The file is availabe 
     when: exsists.stat.readable == True
-
 ## phase 2: Add check for
 #   MD5
-
   - fail:
       msg: "ERROR: Source zip file not found"
     when: exsists.stat.readable ==  False
     ignore_errors: False 
+
+  - name: adjusting oracle_home
+              set_fact: "{{oracle_home}}" = "{{oracle_home_directory}}.{{type}}"
 
   - name: Extract "{{media_dir}}/{{binary_name}}  {{ oracle_home }}"
     unarchive:

@@ -1,0 +1,10 @@
+sysPassword : "SYSchangeme#2019.."
+systemPassword: "SYSTEMchangeme#2019.."
+dbsnmpPassword: "DBSNMPchangeme#2019.."
+asmsnmpPassword: "ASMDBSNMPchangeme#2019.."
+storageType:  ASM
+characterSet: WEISO855P1
+nationalCharacterSet: ALIUTF16
+totalMemory: 2014
+redoLogFilesize: 521
+
