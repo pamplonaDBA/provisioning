@@ -25,8 +25,14 @@
      include_vars:
     file: "oracle_standard.yaml"
 
-   - name: adjusting oracle_home
-       set_fact: "{{oracle_home}}" = "{{oracle_home_directory}}.{{type}}"
+  - set_fact:
+     oracle_home: "{{oracle_home_directory.db}}"
+    when: type == 'db'
+
+  - set_fact:
+     oracle_home: "{{oracle_home_directory.asm}}"
+    when: type == 'asm'
+
 
 #
 #   

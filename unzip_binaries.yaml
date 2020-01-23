@@ -15,20 +15,18 @@
   become_user: root
   tasks:
 # checking prerrequisites     
-   - fail: msg="Error no server definied, please define the env variable in the job"
-       when: env is not defined
-   - fail: msg="Error no server definied, please define the env variable in the job"
-        when: env is not defined
-# End prerrequisites  + check var file for improvement
-#
+  - fail: msg="Error no server definied, please define the env and type variable in the job"
+    when: env is not defined or type is not defined
 # Loading env
-   - name: Including Standard_values 
-     include_vars:
-    file: "oracle_standard.yaml"
+  - name: Including Standard_values 
+    include_vars:
+     file: "vars/oracle_standard.yaml"
 
   - name: Including binaries info
     include_vars:
-      file: "{{type}}_binaries.yaml"
+      file: "vars/{{type}}_binaries.yaml"
+
+
   - name: check for required binaries
     stat:
      path: "{{media_dir}}/{{binary_name}}"
@@ -36,15 +34,19 @@
   - debug:
       msg: The file is availabe 
     when: exsists.stat.readable == True
-## phase 2: Add check for
-#   MD5
+
   - fail:
       msg: "ERROR: Source zip file not found"
     when: exsists.stat.readable ==  False
     ignore_errors: False 
 
-  - name: adjusting oracle_home
-              set_fact: "{{oracle_home}}" = "{{oracle_home_directory}}.{{type}}"
+  - set_fact:
+     oracle_home: "{{oracle_home_directory.db}}"
+    when: type == 'db'
+
+  - set_fact:
+     oracle_home: "{{oracle_home_directory.asm}}"
+    when: type == 'asm'
 
   - name: Extract "{{media_dir}}/{{binary_name}}  {{ oracle_home }}"
     unarchive:

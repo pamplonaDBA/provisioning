@@ -14,22 +14,24 @@
   become_user: oracle
   tasks:
 # checking prerrequisites     
-  - fail: msg="Error no server definied, please define the env variable in the job"
-    when: env is not defined
-  - fail: msg="Error no server definied, please define the version variable in the job"
-    when: version is not defined
-  - fail: msg="Error no server definied, please define the type variable in the job"
-    when: type is not defined
+  - fail: msg="Error no server definied, please define the env,type and version variables in the job"
+    when: env is not defined or version is not defined or type is not defined
 
 # End prerrequisites  + check var file for improvement
 
 # Loading env
   - name: Including Standard_values 
     include_vars:
-      file: "oracle_standard.yaml"
+      file: "vars/oracle_standard.yaml"
 
-  - name: adjusting oracle_home
-    set_fact: "{{oracle_home}}" = "{{oracle_home_directory}}.{{type}}"
+  - set_fact:  
+     oracle_home: "{{oracle_home_directory.db}}"
+    when: type == "db"
+
+  - set_fact:
+     oracle_home: "{{oracle_home_directory.asm}}"
+    when: type == "asm"
+
 #
   - name: create  directories
     file:

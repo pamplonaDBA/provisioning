@@ -44,10 +44,16 @@
     when: item ==  "{{SID}}"
     with_items: 
      - "{{count.stdout_lines}}"
-  
-  - name: adjusting oracle_home
-    set_fact: "{{oracle_home}}" = "{{oracle_home_directory}}.{{type}}"
 
+  - set_fact:
+     oracle_home: "{{oracle_home_directory.db}}"
+    when: type == 'db'
+
+  - set_fact:
+     oracle_home: "{{oracle_home_directory.asm}}"
+    when: type == 'asm'
+
+  
   - name: If we are in a FS installation we check if directories exsists
     stat:
      path: "{{ item }}"

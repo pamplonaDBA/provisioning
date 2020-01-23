@@ -1,0 +1,26 @@
+root_user:                      "root"
+oracle_user:                    "oracle"
+oracle_group:                   "dba"
+media_dir:                      "/mnt/media"
+root_directory:                 "/u01/app"
+oracle_inventory:               "{{root_directory}}/oraInventory"
+oracle_base:                    "{{root_directory}}/oracle"
+stage_directory:                "{{oracle_base}}/stage"
+oracle_home_directory:
+  db:                           "{{oracle_base}}/product/{{version}}/dbhome1"
+  asm:                          "{{oracle_base}}/product/{{version}}/grid"
+response_file:                  "{{type}_{{action}}_{{version}}.rsp"
+data_location:          
+ FS:                            "/oradata/{{SID}}/data"
+ ASM:                           "+{{oracle_hostname}}/DATA"
+fra_location:
+  FS:                           "/oradata/{{SID}}/data"
+  ASM:                          "+{{oracle_hostname}}/FRA"
+redo1_location:
+  FS:                           "/oradata/{{SID}}/redo"
+  ASM:                          "+{{oracle_hostname}}/REDO1"
+redo2_location:
+  FS:                           "/oradata/{{SID}}/redo"
+  ASM:                          "+{{oracle_hostname}}/REDO2"
+
+  
