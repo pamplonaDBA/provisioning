@@ -4,7 +4,8 @@
 #   env:                                     name of the server  which should be in the inventory
 #   type:                                 asm or dba
 #   version:                              version of database or asm
-#   vars/oracle_standard.yaml   standard values for Oracle
+#   vars/oracle_standard.yaml           standard values for Oracle
+#   vars/asm_binaries_version:          Info with the asm binaries 
 ---
 - hosts: "{{ env }}"
   remote_user: ansible
@@ -21,7 +22,7 @@
 
   - name: Including binaries info
     include_vars:
-     file: "vars/{{type}}_binaries.yaml"
+     file: "vars/{{type}}_binaries{{version}}.yaml"
   - set_fact:
      oracle_home: "{{oracle_home_directory.db}}"
     when: type == 'db'

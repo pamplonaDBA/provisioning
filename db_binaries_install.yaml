@@ -4,7 +4,6 @@
 # requires
 #   env:                                     name of the server  which should be in the inventory
 #     vars/oracle_standard.yaml   standard values for Oracle
-#     vars/db_install.yaml  : configuration file with the variables 
 ---
 - hosts: "{{env}}"
   remote_user: ansible
@@ -23,7 +22,7 @@
 # Loading env
    - name: Including Standard_values
      include_vars:
-    file: "oracle_standard.yaml"
+      file: "vars/oracle_standard.yaml"
 
   - set_fact:
      oracle_home: "{{oracle_home_directory.db}}"
