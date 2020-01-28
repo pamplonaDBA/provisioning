@@ -11,4 +11,4 @@ recoveryGroupName:
 characterSet: "US7ASCII"
 nationalCharacterSet: "AL16UTF16"
 totalMemory: "2014"
-initParams: "DB_CREATE_FILE_DEST=/oradata/{{SID}}/data, DB_CREATE_ONLINE_LOG_DEST_1=/oradata/{{SID}}/redo, DB_CREATE_ONLINE_LOG_DEST_2=/oradata/{{SID}}/redo"
+initParams: "DB_CREATE_FILE_DEST=/oradata/{{SID}}/data, DB_CREATE_ONLINE_LOG_DEST_1=/oradata/{{SID}}/redo, DB_CREATE_ONLINE_LOG_DEST_2=/oradata/{{SID}}/redo2"
