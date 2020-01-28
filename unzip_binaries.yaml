@@ -29,7 +29,7 @@
 
   - name: check for required binaries
     stat:
-     path: "{{media_dir}}/{{binary_name}}"
+     path: "{{media_dir}}/{{iversion.binary_name}}"
     register: exsists
   - debug:
       msg: The file is availabe 
@@ -48,9 +48,9 @@
      oracle_home: "{{oracle_home_directory.asm}}"
     when: type == 'asm'
 
-  - name: Extract "{{media_dir}}/{{binary_name}}  {{ oracle_home }}"
+  - name: Extract "{{media_dir}}/{{version.binary_name}}  {{ oracle_home }}"
     unarchive:
-     src: "{{media_dir}}/{{binary_name}}"
+     src: "{{media_dir}}/{{version.binary_name}}"
      remote_src: yes
      dest: "{{ oracle_home }}"
     become: yes

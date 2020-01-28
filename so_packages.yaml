@@ -18,9 +18,9 @@
     include_vars:
      file: "packages_{{type}}_{{version}}.yaml"
 
-  - name: check packages "{{package_name}}"
+  - name: check packages "{{version.package_name}}"
     yum:
       name: "{{package_name}}"
       state: latest
     with_items:
-      - "{{ package_name }}"
+      - "{{ version.package_name }}"

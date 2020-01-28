@@ -5,7 +5,7 @@
 #   type:                                 asm or dba
 #   version:                              version of database or asm
 #   vars/oracle_standard.yaml           standard values for Oracle
-#   vars/asm_binaries_version:          Info with the asm binaries 
+#   vars/asm_binaries.xml:          Info with the asm binaries 
 ---
 - hosts: "{{ env }}"
   remote_user: ansible
@@ -33,13 +33,13 @@
 #
   - name: generate response file
     template:
-     src: "templates/{{ response_file }}.j2"
-     dest: "{{ stage_directory }}/{{response_file}}"
+     src: "templates/{{ version.response_file }}.j2"
+     dest: "{{ stage_directory }}/{{ version.response_file}}"
      mode: '0644'
 
 
   - name: Install Grid  19c Software
-    shell: "{{ oracle_home }}/gridSetup.sh  -silent -responseFile {{ stage_directory }}/{{response_file}}"
+    shell: "{{ oracle_home }}/gridSetup.sh  -silent -responseFile {{ stage_directory }}/{{version.response_file}}"
     become: yes
     become_user: "{{ oracle_user }}"
     args:
