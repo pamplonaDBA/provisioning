@@ -1,7 +1,4 @@
-19.0.0.3:
- response_file:                  "asm_binaries_19.0.0.3.rsp"
- binary_name:                    "LINUX.X64_193000_grid_home.zip"
-19.0.0.5:
- response_file:                  "asm_binaries_19.0.0.5.rsp"
-  binary_name:                    "LINUX.X64_195000_grid_home.zip"
-
+19.3:
+ response_file:    "asm_binaries_19.3.rsp"
+ binary_name:      "LINUX.X64_193000_grid_home.zip"
+ sha256sum:        "d668002664d9399cf61eb03c0d1e3687121fc890b1ddd50b35dcbe13c5307d2e"   
