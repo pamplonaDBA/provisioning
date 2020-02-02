@@ -22,13 +22,6 @@
     include_vars:
      file: "vars/so_{{version}}_requisites.yaml"
 
-  - name: Check  S.O 
-    assert:
-       that:
-           - "ansible_os_family == ' RedHat'"
-           - "ansible_distribution_version|inti =  7"
-    tags: oscompatible
-
   - name: Check the oracle user 
     user:
       name: "{{oracle_user}}"
@@ -59,6 +52,7 @@
     sysctl:
         name: vm.nr_hugepages
         value: "{{huge_pages}}"  
+        sysctl_set: yes
         state: present
         sysctl_file: /etc/sysctl.d/30-oracle.conf     
         ignoreerrors: yes  
@@ -67,10 +61,11 @@
   - name: Limits para el usuario 
     pam_limits:
       domain: oracle
-      limit_type: soft
+      use_max: yes
+      limit_type: "{{ item.tipo }}"
       limit_item: "{{ item.name }}"
       value: "{{item.value}}"
-      ignoreerrors: yes
+      dest: /etc/security/limits.d/30-oracle.conf
     with_items: "{{limits}}"
     tags: limits 
         

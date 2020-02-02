@@ -29,7 +29,7 @@
 
   - name: check for required binaries
     stat:
-     path: "{{media_dir}}/{{iversion.binary_name}}"
+     path: "{{media_dir}}/{{version.binary_name}}"
     register: exsists
   - debug:
       msg: The file is availabe 
