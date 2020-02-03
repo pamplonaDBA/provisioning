@@ -22,6 +22,13 @@
     include_vars:
      file: "vars/so_{{version}}_requisites.yaml"
 
+  - name: Check the oracle group
+    group:
+     name: "{{ oracle_group}}"
+     gid: "{{oracle_gid}}"
+     state: present 
+    tags: oragroup
+
   - name: Check the oracle user 
     user:
       name: "{{oracle_user}}"

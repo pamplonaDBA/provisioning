@@ -8,7 +8,7 @@ root_directory:                 "/u01/app"
 oracle_inventory:               "{{root_directory}}/oraInventory"
 oracle_base:                    "{{root_directory}}/oracle"
 stage_directory:                "{{oracle_base}}/stage"
-#oracle_hostname:                "{{ ansible_hostname|upper }}"
+oracle_hostname:                "{{ ansible_hostname|upper }}"
 oracle_home_directory:
   db:                           "{{oracle_base}}/product/{{version}}/dbhome1"
   asm:                          "{{oracle_base}}/product/{{version}}/grid"
