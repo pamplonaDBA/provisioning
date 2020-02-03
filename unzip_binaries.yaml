@@ -30,7 +30,7 @@
   - set_fact:
       binary_file: "{{item.file}}"
     with_items: "{{binaries}}"
-    when:  item.version ==  "19.3"  and  item.type == "asm"  
+    when:  item.version == "{{version}}"  and  item.type == "{{type}}"  
   
   - name: check for required binaries
     stat:
