@@ -10,8 +10,8 @@ oracle_base:                    "{{root_directory}}/oracle"
 stage_directory:                "{{oracle_base}}/stage"
 oracle_hostname:                "{{ ansible_hostname|upper }}"
 oracle_home_directory:
-  db:                           "{{oracle_base}}/product/{{version}}/dbhome1"
-  asm:                          "{{oracle_base}}/product/{{version}}/grid"
+  db:                           "{{oracle_base}}/product/{{version|regex_replace('r','.')|regex_replace('v','')}}/dbhome1"
+  asm:                          "{{oracle_base}}/product/{{version|regex_replace('r','.')|regex_replace('v','')}}/grid"
 response_file:                  "{{type}_{{action}}_{{version}}.rsp"
 data_location:          
  FS:                            "/oradata/{{SID}}/data"

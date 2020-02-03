@@ -30,13 +30,13 @@
   - name: generate response file
     template:
      src: "templates/{{ version.response_file }}.j2"
-     dest: "{{ stage_directory }}/{{ version.response_file}}"
+     dest: "{{ stage_directory }}/{{binaries.version.response_file}}"
      mode: '0644'
      tags: asm_template  
 
 
   - name: Install Grid  19c Software
-  shell: "{{ oracle_home }}/gridSetup.sh  -silent -waitforcompletion -ignorePrereq  -responseFile {{ stage_directory }}/{{version.response_file}}"
+  shell: "{{ oracle_home }}/gridSetup.sh  -silent -waitforcompletion -ignorePrereq  -responseFile {{ stage_directory }}/{{binaries.version.response_file}}"
     become: yes
     become_user: "{{ oracle_user }}"
     tags: gridsetup  

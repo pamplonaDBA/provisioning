@@ -17,10 +17,14 @@
 
   - name: Including generic database type data 
     include_vars:
-      file: "var/oracle_standard.yml"
+     file: "vars/oracle_standard.yaml"
+  - name: Including binaries info
+    include_vars:
+     file: "vars/{{type}}_binaries.yaml"
+ 
+  - debug:        
+      msg: "version es  {{version|regex_replace('r','.')|regex_replace('v','')}}"  
 
-- set_fact:
-       oracle_home: "{{oracle_home_directory.asm}}"
-             when: type == 'asm'
-
-
+...
+#  - debug:
+#      msg: "El valor que buscamos es  {binaries.version.binary_name}} "
