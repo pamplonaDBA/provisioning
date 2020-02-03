@@ -5,7 +5,7 @@
 #   type:                                 asm or dba
 #   version:                              version of database or asm
 #   vars/oracle_standard.yaml           standard values for Oracle
-#   vars/asm_binaries.xml:          Info with the asm binaries 
+#   vars/oracle_files.yaml:          Info with the asm binaries 
 ---
 - hosts: "{{ env }}"
   remote_user: ansible
@@ -22,24 +22,30 @@
 
   - name: Including binaries info
     include_vars:
-     file: "vars/{{type}}_binaries.yaml"
+     file: "vars/oracle_files.yaml"
+
+ # retrieve the response file
+  - set_fact:
+      response_file: "{{item.response_file}}"
+    with_items: "{{binaries}}"
+    when:  item.version == "{{version}}"  and  item.type == "{{type}}"
+
+ # retrieve the oracle_home
   - set_fact:
      oracle_home: "{{oracle_home_directory.asm}}"
     when: type == 'asm'
 #
   - name: generate response file
     template:
-     src: "templates/{{ version.response_file }}.j2"
-     dest: "{{ stage_directory }}/{{binaries.version.response_file}}"
+     src: "templates/{{ response_file }}.j2"
+     dest: "{{ stage_directory }}/{{response_file}}"
      mode: '0644'
-     tags: asm_template  
 
 
   - name: Install Grid  19c Software
-  shell: "{{ oracle_home }}/gridSetup.sh  -silent -waitforcompletion -ignorePrereq  -responseFile {{ stage_directory }}/{{binaries.version.response_file}}"
+    shell: "{{ oracle_home }}/gridSetup.sh  -silent -waitforcompletion -ignorePrereq  -responseFile {{ stage_directory }}/{{response_file}}"
     become: yes
     become_user: "{{ oracle_user }}"
-    tags: gridsetup  
     args:
      chdir: "{{ oracle_home }}"
     environment:
@@ -51,7 +57,6 @@
     shell: "{{ oracle_home }}/root.sh"
     become: yes
     become_user: root
-    tags: rootsh
     args:
      chdir: "{{ oracle_home }}"
 
@@ -70,7 +75,6 @@
     shell: "$GI_HOME/bin/srvctl add listener -listener LISTENER  -oraclehome  {{ oracle_home }}" 
     become: yes
     become_user: "{{oracle_user}}"
-    tags: create_listener  
     args:
      chdir: "{{ oracle_home }}"
     environment:

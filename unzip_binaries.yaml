@@ -54,14 +54,13 @@
     when: type == 'asm'
 
   - debug:
-     msg: " File exsists. unzipping {{media_dir}}/{{binary_file}}  {{ oracle_home }}
+     msg: " File exsists. unzipping {{media_dir}}/{{binary_file}}  {{ oracle_home }}"
 
-  - name: Extract "{{media_dir}}/{{binary_file}}  {{ oracle_home }}"
+  - name:  "Extract {{media_dir}}/{{binary_file}}  {{ oracle_home }}"
     unarchive:
       src: "{{media_dir}}/{{binary_file}}"
       remote_src: yes
       dest: "{{ oracle_home }}"
-    tag: unzipping
     become: yes
     become_user: "{{ oracle_user}}"
 
