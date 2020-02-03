@@ -51,7 +51,7 @@ kernel_values:
   - { name: net.ipv4.ip_local_port_range, value: "9000 65500" }
 
 #60 percent huge pages
-huge_pages: "{{((0.1 * ansible_memtotal_mb)*1024/2)|round|int }}"
+huge_pages: "{{((0.6 * ansible_memtotal_mb)*1024/2)|round|int }}"
 
 limits:
   - { tipo: 'soft' ,name: 'nproc', value: 16384 }
