@@ -1,6 +1,0 @@
-binaries:
-  v19r3:
-    response_file: "asm_binaries_v19r3.rsp"
-    binary_name: "LINUX.X64_193000_grid_home.zip" 
-
-
