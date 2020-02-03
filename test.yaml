@@ -3,7 +3,6 @@
 #
 # requires
 #   env:                                     name of the server  which should be in the inventory
-
 ---
 - hosts: "{{env}}"
   remote_user: ansible
@@ -18,13 +17,17 @@
   - name: Including generic database type data 
     include_vars:
      file: "vars/oracle_standard.yaml"
+
   - name: Including binaries info
     include_vars:
-     file: "vars/{{type}}_binaries.yaml"
- 
-  - debug:        
-      msg: "version es  {{version|regex_replace('r','.')|regex_replace('v','')}}"  
+     file: "vars/oracle_files.yaml"
+
+  - debug:
+     msg: " El valor que buscamos es  {{item.file}} "
+    with_items: "{{binaries}}"  
+    when:  item.version ==  "19.3"  and  item.type == "asm"  
 
 ...
-#  - debug:
-#      msg: "El valor que buscamos es  {binaries.version.binary_name}} "
+#
+## - debug:        
+##      msg: "version es  {{version|regex_replace('r','.')|regex_replace('v','')}}"  
