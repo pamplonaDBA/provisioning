@@ -6,7 +6,6 @@
 #     type:                                 type of installation [asm|db]    
 #     version:                              version of database or asm
 #     vars/oracle_standard.yaml   standard values for Oracle
-#     ignore                                if it can ignore errors 
 ---
 - hosts: "{{env}}"
   remote_user: ansible
@@ -46,7 +45,7 @@
       - "{{ oracle_inventory }}"
       - "{{ oracle_base }}"
       - "{{ oracle_home }}"
-    ignore_errors: "{{ ignore}}"
+    ignore_errors: no
     tags:
       - create_directories
 

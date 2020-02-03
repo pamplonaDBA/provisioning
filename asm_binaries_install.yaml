@@ -76,7 +76,7 @@
     environment:
       GI_HOME: "{{ oracle_home }}"
       ORACLE_BASE: "{{ oracle_base}}"
-    ignore_errors: False
+    ignore_errors: no
 
   - name: Enable listener
     shell: $GI_HOME/bin/srvctl enable listener -listener LISTENER 
@@ -87,7 +87,7 @@
     environment:
       GI_HOME: "{{ oracle_home }}"
       ORACLE_BASE: "{{ oracle_base}}"
-    ignore_errors: True
+    ignore_errors: yes
 
   - name: Start listener
     shell: $GI_HOME/bin/srvctl start listener -listener LISTENER 
@@ -98,5 +98,5 @@
     environment:
       GI_HOME: "{{ oracle_home }}"
       ORACLE_BASE: "{{ oracle_base}}"
-    ignore_errors: False
+    ignore_errors: no
 
