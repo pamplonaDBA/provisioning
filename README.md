@@ -20,7 +20,8 @@ La estructura es similar a la de los roles, teniendo:
         |- db_create_19.3.j2        Ejemplo de template para la icreacion de una base datos Single instance version 19.3
    |
    |- files
-        |-db_createdb_TEST.yaml     Ejemplo de parametrizacion especifica par una base de datos 
+        |-REQ03_createdb_TEST.yaml     Ejemplo de informacion de provisionamiento de  una base de datos 
+        |-REQ01_asm_create_disks.yaml  Ejemplo de informacon de  provisionamiento de discos para el ASM 
    |  
    |  
    | so_check.yaml                 Playbook que comprueba los prerrequisitos del sistema operativo  
