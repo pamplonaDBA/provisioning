@@ -20,7 +20,7 @@
 
   - name: "Including So {{version}} requisites"
     include_vars:
-     file: "files/{{req|upper}}_asm_create_diskgroups.yaml"
+     file: "files/{{req|upper}}_asm_create_disks.yaml"
 
   - name: creating DATA disks
     shell: 
