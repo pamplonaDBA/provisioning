@@ -1,0 +1,86 @@
+#  Pamplona 2020
+#  Playbook which creates a database
+#
+# requires
+#   env:                                     name of the server  which should be in the inventory
+#   SID:                                     Oracle SID
+#   version:                                 Version of the database
+#   vars/oracle_standard.yaml                 standard values for Oracle
+---
+- hosts: "{{env}}"
+  remote_user: ansible
+  become: yes
+  become_user: root
+  action: createdb
+  tasks:
+ # checking prerrequisites     
+   - fail: msg="Error no server definied, please define the env variable in the job"
+       when: env is not defined or versionis not defined  
+# Loading env
+   - name: Including Standard_values
+     include_vars:
+      file: "oracle_standard.yaml"
+
+#   - name: specific values dor this db creation
+#     include_vars:
+#       file: "db.create_{{SID}}_{{version}}.yaml"
+
+#
+#
+#
+  - name: checking oratab
+    shell: "cat /etc/oratab|grep +ASM |sed -e 's/# line added by Agent/ /g' -e 's/:/ /g'|awk '{ print $1}' "
+    register: count
+
+  - fail: 
+      msg: "ERROR: The chain {{item}} exsists at  {{env}}  /etc/oratab file "
+    when: item ==  "+ASM"
+    with_items: 
+     - "{{count.stdout_lines}}"
+  - set_fact:
+     oracle_home: "{{oracle_home_directory.asm}}"
+
+  
+  - name: If we are in a FS installation we check if directories exsists
+    stat:
+     path: "{{ item }}"
+    register: file_details
+    with_items:
+      - "/oradata/{{ SID }}/data"
+      - "/oradata/{{ SID }}/fra"
+      - "/oradata/{{ SID }}/temp"
+      - "/oradata/{{ SID }}/redo"
+  - fail: 
+      msg: "ERROR: Directory {{item.item}}  do not exsists"
+    when: "item.stat.exists != True"  and "{{storageType}}"==ASM
+    with_items: "{{ file_details.results }}"
+
+  - name: generate response file
+    become: yes
+    become_user: "{{ oracle_user}}"
+    template:
+     src: "templates/db_createdb_{{version}}.rsp.j2"
+     dest: "{{ stage_directory }}/db_create_{{SID}}.rsp"
+     mode: '0644'
+  
+  -name:  adding additional values to database creation(FS)
+
+  - name: createdb 
+    become: yes
+    become_user: "{{oracle_user}}"    
+    shell: "{{ oracle_home }}/bin/dbca -silent -createDatabase  -ignorePreReqs -responseFile {{ stage_directory }}/db_create_{{SID}}.rsp"
+    args:
+      chdir: "{{ oracle_home }}"
+    environment:
+       CV_ASSUME_DISTID: OEL7.6
+
+  - name: createdb
+    become: yes
+     become_user: "{{oracle_user}}"
+    shell: "{{ oracle_home }} bin/asmca -silent  -configureASM sysAsmPassword cucal \
+         #                  -asmsnmpPassword cucal \
+         #                         -param ASM_POWER_LIMIT=1 \
+         #                                -diskString "/dev/oracleasm/disks/*" \
+         #                                           -diskGroupName ${HOST}_DATA \
+         #                                                      -disk "/dev/oracleasm/disks/${HOST}_DATA*" \
+         #                                                                 -redundancy EXTERNAL \
