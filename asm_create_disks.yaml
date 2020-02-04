@@ -52,4 +52,4 @@
 
   - name: scanning disks 
     shell:
-     cmd: "/usr/sbin/asmtool scandisks"
+     cmd: "/usr/sbin/oracleasm scandisks"

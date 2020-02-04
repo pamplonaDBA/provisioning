@@ -53,7 +53,7 @@
      become_user: "{{oracle_user}}"
      shell:
        cmd: "{{ oracle_home }}/bin/asmca  -silent
-         -configureASM
+         -createDiskGroup
          -sysAsmPassword {{sysasm_passd}}
          -diskString \"/dev/oracleasm/disks/*\"
          -diskGroupName {{oracle_hostname|upper}}_FRA
@@ -66,7 +66,7 @@
      become_user: "{{oracle_user}}"
      shell:
        cmd: "{{ oracle_home }}/bin/asmca  -silent
-         -configureASM
+         createDiskGroup
          -sysAsmPassword {{sysasm_passd}}
          -diskString \"/dev/oracleasm/disks/*\"
          -diskGroupName {{oracle_hostname|upper}}_REDO1
@@ -79,7 +79,7 @@
      become_user: "{{oracle_user}}"
      shell:
        cmd: "{{ oracle_home }}/bin/asmca  -silent
-         -configureASM
+         -createDiskGroup
          -sysAsmPassword {{sysasm_passd}}
          -diskString \"/dev/oracleasm/disks/*\"
          -diskGroupName {{oracle_hostname|upper}}_REDO2
