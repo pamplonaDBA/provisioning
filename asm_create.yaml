@@ -48,7 +48,7 @@
          -disk \"/dev/oracleasm/disks/{{oracle_hostname|upper}}_DATA*\"  
          -redundancy EXTERNAL  "
 
-   - name:  Create FRA
+   - name:  Create  FRA, REDO1 and REDO2
      become: yes
      become_user: "{{oracle_user}}"
      shell:
@@ -56,34 +56,15 @@
          -createDiskGroup
          -sysAsmPassword {{sysasm_passd}}
          -diskString \"/dev/oracleasm/disks/*\"
-         -diskGroupName {{oracle_hostname|upper}}_FRA
-         -disk \"/dev/oracleasm/disks/{{oracle_hostname|upper}}_FRA*\"
+         -diskGroupName {{oracle_hostname|upper}}_{{item}}
+         -disk \"/dev/oracleasm/disks/{{oracle_hostname|upper}}_{{item}}*\"
          -redundancy EXTERNAL  "
+     with_items: 
+       - FRA
+       - REDO1
+       - REDO2 
 
 
-   - name: create REDO1
-     become: yes
-     become_user: "{{oracle_user}}"
-     shell:
-       cmd: "{{ oracle_home }}/bin/asmca  -silent
-         createDiskGroup
-         -sysAsmPassword {{sysasm_passd}}
-         -diskString \"/dev/oracleasm/disks/*\"
-         -diskGroupName {{oracle_hostname|upper}}_REDO1
-         -disk \"/dev/oracleasm/disks/{{oracle_hostname|upper}}_REDO1*\"
-         -redundancy EXTERNAL  "
 
-
-   - name: create REDO2
-     become: yes
-     become_user: "{{oracle_user}}"
-     shell:
-       cmd: "{{ oracle_home }}/bin/asmca  -silent
-         -createDiskGroup
-         -sysAsmPassword {{sysasm_passd}}
-         -diskString \"/dev/oracleasm/disks/*\"
-         -diskGroupName {{oracle_hostname|upper}}_REDO2
-         -disk \"/dev/oracleasm/disks/{{oracle_hostname|upper}}_REDO2*\"
-         -redundancy EXTERNAL  "
 
 
