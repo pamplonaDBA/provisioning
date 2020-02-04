@@ -1,0 +1,55 @@
+# Pamplona 2019 
+#  Playbook which checks if teh hosts has all the requested prereequisites
+#  
+#  requires
+#    env:                             name of the server  which should be in the inventory
+#    REQ:                             number of request 
+#    vars/oracle_standard.yaml        configuration file with all the deppartment values
+---
+- hosts: "{{env}}"
+  remote_user: ansible
+  become: yes
+  become_user: root
+  tasks:
+  - fail: msg="Error no server definied, please define the env variable or de request number in the job"
+    when: env is not defined or req is not defined
+
+  - name: "Including standard variables"
+    include_vars:
+     file: "vars/oracle_standard.yaml"
+
+  - name: "Including So {{version}} requisites"
+    include_vars:
+     file: "files/{{req|upper}}_asm_create_diskgroups.yaml"
+
+  - name: creating DATA disks
+    shell: 
+     cmd: "/usr/sbin/asmtool -C -l /dev/oracleasm -n {{oracle_hostname|upper}}_DATA0{{ansible_loop.index}} -s {{item}} -a  force=yes "
+    loop: "{{DATA}}"
+    loop_control:
+     extended: yes
+
+  - name: Creating  FRA disks
+    shell:
+     cmd: "/usr/sbin/asmtool -C -l /dev/oracleasm -n {{oracle_hostname|upper}}_FRA0{{ansible_loop.index}} -s {{item}} -a  force=yes "
+    loop: "{{FRA}}"
+    loop_control:
+     extended: yes
+
+  - name: Creating REDO1 disks
+    shell: 
+     cmd: "/usr/sbin/asmtool -C -l /dev/oracleasm -n {{oracle_hostname|upper}}_REDO1_{{ansible_loop.index}} -s {{item}} -a force=yes "
+    loop: "{{REDO1}}"
+    loop_control:
+     extended: yes
+
+  - name: Creating REDO2 disks
+    shell: 
+     cmd: "/usr/sbin/asmtool -C -l /dev/oracleasm -n {{oracle_hostname|upper}}_REDO2_{{ansible_loop.index}} -s {{item}} -a force=yes "
+    loop: "{{REDO2}}"
+    loop_control:
+     extended: yes
+
+  - name: scanning disks 
+    shell:
+     cmd: "/usr/sbin/asmtool scandisks"

@@ -24,14 +24,14 @@ La estructura es similar a la de los roles, teniendo:
    |  
    |  
    | so_check.yaml                 Playbook que comprueba los prerrequisitos del sistema operativo  
-   | oracle_directories.yaml 
-   | unzip_binaries.yaml
-   | asm_binaries_install.yaml
-   | configure_asmlib.yaml
-   | asm_binaries_install.yaml
-   | asm_create.yaml
-   | db_binaries_install.yaml
-   | db_createdb.yaml
+   | oracle_directories.yaml       Playbook que comprueba el arbol de directorios de oracle
+   | unzip_binaries.yaml           Playbook generico que decomprime zips
+   | asm_binaries_install.yaml     Playbok  que installa los binarios de ASM  y registra el oracle restart sin ASM
+   | configure_asmlib.yaml         Playbook que configura el asmlib
+   | asm_create_disks.yaml         Playbook que configura los discos de ASM 
+   | asm_create.yaml               Playbook que crea una instancia +ASM con en el GRID y con los discos previamente instalados
+   | db_binaries_install.yaml      Playbook que instala los binarios del motor de base de datos
+   | db_createdb.yaml              Playbook que crea una base de datos
 
 
 </pre>
