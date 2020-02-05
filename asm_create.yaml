@@ -1,0 +1,100 @@
+#  Pamplona 2020
+#  Playbook which creates a database
+#
+# requires
+#   env:                                     name of the server  which should be in the inventory
+#   vars/oracle_standard.yaml                 standard values for Oracle
+---
+- hosts: "{{env}}"
+  remote_user: ansible
+  tasks:
+
+ # checking prerrequisites     
+   - fail: 
+       msg: "Error no server definied, please define the env variable in the job"
+     when: env is not defined 
+
+# Loading env
+   - name: Including Standard_values
+     include_vars:
+      file: "vars/oracle_standard.yaml"
+
+   - name: checking oratab
+     shell:
+       cmd: "cat /etc/oratab|grep +ASM |sed -e 's/# line added by Agent/ /g' -e 's/:/ /g'|awk '{ print $1}' "
+     register: count
+
+   - fail: 
+       msg: "ERROR: The chain {{item}} exsists at  {{env}}  /etc/oratab file "
+     when: item ==  "+ASM"
+     with_items: 
+      - "{{count.stdout_lines}}"
+
+   - set_fact:
+      oracle_home: "{{oracle_home_directory.asm}}"
+     when: type == 'asm'
+
+   - name: Creating syslog file
+     copy:
+      dest: /etc/rsyslog.d/30-oracle.conf
+      content: |
+       "local0.info {{oracle_home}}/rdbms/audit/asmaudit.log
+       &~"
+      force: yes
+     become: yes
+     become_user: root  
+
+   - name: Creating logrotate file
+     copy:
+       dest: /etc/logrotate.d/30-oracle_logs
+       content: |
+         "{{oracle_home}}/rdbms/audit/asmaudit.log {
+           weekly
+           rotate 4
+           compress
+           copytruncate
+           delaycompress
+           notifyempty
+          }"
+       force: yes   
+     become: yes
+     become_user: root
+
+
+   - name: create ASM
+     become: yes
+     become_user: "{{oracle_user}}"
+     shell:
+       cmd: "{{ oracle_home }}/bin/asmca  -silent 
+         -configureASM 
+         -sysAsmPassword {{sysasm_passd}} 
+         -asmsnmpPassword {{asmdbsnmp_passwd}} 
+         -diskString \"/dev/oracleasm/disks/*\" 
+         -diskGroupName {{oracle_hostname|upper}}_DATA 
+         -disk \"/dev/oracleasm/disks/{{oracle_hostname|upper}}_DATA*\"  
+         -param ASM_POWER_LIMIT=1
+         -param DIAGNOSTIC_DEST={{oracle_base}}
+         -param AUDIT_SYSLOG_LEVEL='local0.info'
+         -param AUDIT_SYS_OPERATIONS=TRUE
+         -redundancy EXTERNAL"
+
+   - name:  Create  FRA, REDO1 and REDO2
+     become: yes
+     become_user: "{{oracle_user}}"
+     shell:
+       cmd: "{{ oracle_home }}/bin/asmca  -silent
+         -createDiskGroup
+         -sysAsmPassword {{sysasm_passd}}
+         -diskString \"/dev/oracleasm/disks/*\"
+         -diskGroupName {{oracle_hostname|upper}}_{{item}}
+         -disk \"/dev/oracleasm/disks/{{oracle_hostname|upper}}_{{item}}*\"
+         -redundancy EXTERNAL  "
+     with_items: 
+       - FRA
+       - REDO1
+       - REDO2 
+
+
+
+
+

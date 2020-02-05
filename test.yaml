@@ -1,0 +1,33 @@
+#  Pamplona 2019
+#   test playbook for short commands
+#
+# requires
+#   env:                                     name of the server  which should be in the inventory
+---
+- hosts: "{{env}}"
+  remote_user: ansible
+  become: yes
+  become_user: root
+  tasks:
+
+  - fail: 
+     msg: "ERROR: SOME VARIABLE NOT DEFINED: Please define   env , version and SID variables "
+    when: env is not defined  
+
+  - name: Including generic database type data 
+    include_vars:
+     file: "vars/oracle_standard.yaml"
+
+  - name: Including binaries info
+    include_vars:
+     file: "vars/oracle_files.yaml"
+
+  - debug:
+     msg: " El valor que buscamos es  {{item.file}} "
+    with_items: "{{binaries}}"  
+    when:  item.version ==  "19.3"  and  item.type == "asm"  
+
+...
+#
+## - debug:        
+##      msg: "version es  {{version|regex_replace('r','.')|regex_replace('v','')}}"  

@@ -1,0 +1,67 @@
+#  Pamplona 2019
+#  Playbook which sends a respone file and uses it ro install a database
+#
+# requires
+#   env:                                     name of the server  which should be in the inventory
+#     vars/oracle_standard.yaml   standard values for Oracle
+---
+- hosts: "{{env}}"
+  remote_user: ansible
+  become: yes
+  become_user: root
+  type: db
+  action: binaries
+  tasks:
+ # checking prerrequisites     
+   - fail: msg="Error no server definied, please define the env variable in the job"
+       when: env is not defined
+   - fail: msg="Error no server definied, please define the env variable in the job"
+        when: version is not defined
+# End prerrequisites  + check var file for improvement
+#
+# Loading env
+   - name: Including Standard_values
+     include_vars:
+      file: "vars/oracle_standard.yaml"
+
+  - set_fact:
+     oracle_home: "{{oracle_home_directory.db}}"
+    when: type == 'db'
+
+  - set_fact:
+     oracle_home: "{{oracle_home_directory.asm}}"
+    when: type == 'asm'
+
+
+#
+#   
+  - name: generate response file
+    template:
+     src: "templates/{{ response_file }}.j2"
+     dest: "{{ stage_directory }}/{{response_file}}"
+     mode: '0644'
+
+## to improve, check if {{ oracle_home }}/runInstaller exsists
+##
+#
+  - name: Install Oracle 19c Database Software
+    shell: "{{ oracle_home }}/runInstaller -silent -responseFile {{ stage_directory }}/{{response_file}} -noconfig -ignorePrereqFailure"
+    args:
+      chdir: "{{ oracle_home }}"
+      creates: "/var/tmp/instalacion.txt"
+    environment:
+       CV_ASSUME_DISTID: OEL7.6
+    copy:
+     src: "files/{{ response_file }}"
+     dest: "{{ stage_directory }}/{{response_file}}"
+     owner: "{{ oracle_user }} "
+     group: "{{ oracle_group }}"
+    
+
+  - name: Install Oracle 19c Database Software
+    shell: "{{ oracle_home }}/runInstaller -silent -responseFile {{ stage_directory }}/{{response_file}} -noconfig -ignorePrereqFailure"
+    become: yes
+    become_user: "{{ oracle_user }}"
+    ignore_errors: True
+
+
