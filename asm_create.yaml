@@ -4,8 +4,11 @@
 # requires
 #   env:                                     name of the server  which should be in the inventory
 #   vars/oracle_standard.yaml                 standard values for Oracle
+#
 ---
 - hosts: "{{env}}"
+  vars:
+    type: asm
   remote_user: ansible
   tasks:
 
@@ -93,8 +96,3 @@
        - FRA
        - REDO1
        - REDO2 
-
-
-
-
-

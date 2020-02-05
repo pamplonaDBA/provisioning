@@ -9,30 +9,27 @@
 #   files/db_createdb_[SID]_[version]         specific values dor this db creation
 ---
 - hosts: "{{env}}"
+  vars:
+    type: db
   remote_user: ansible
   become: yes
   become_user: root
   action: createdb
   tasks:
  # checking prerrequisites     
-   - fail: msg="Error no server definied, please define the env variable in the job"
+   - fail: msg="Error no server,req or SID  definied, please define them in the job"
        when: env is not defined
-   - fail: msg="Error no server definied, please define the env variable in the job"
-        when: version is not defined
-   - fail: msg="Error no server definied, please define the env variable in the job"
-        when: SID is not defined
 # End prerrequisites  + check var file for improvement
 #
 # Loading env
    - name: Including Standard_values
      include_vars:
-      file: "oracle_standard.yaml"
+      file: "vars/oracle_standard.yaml"
 
    - name: specific values dor this db creation
      include_vars:
-       file: "db.create_{{SID}}_{{version}}.yaml"
+       file: "files/{{req|upper}}createdb_{{SID}}.yaml"
 
-#
 #
 #
   - name: checking oratab
@@ -49,11 +46,6 @@
      oracle_home: "{{oracle_home_directory.db}}"
     when: type == 'db'
 
-  - set_fact:
-     oracle_home: "{{oracle_home_directory.asm}}"
-    when: type == 'asm'
-
-  
   - name: If we are in a FS installation we check if directories exsists
     stat:
      path: "{{ item }}"
@@ -65,7 +57,7 @@
       - "/oradata/{{ SID }}/redo"
   - fail: 
       msg: "ERROR: Directory {{item.item}}  do not exsists"
-    when: "item.stat.exists != True"  and "{{storageType}}"==ASM
+    when: "item.stat.exists != True"  and "{{storageType}}"==FS
     with_items: "{{ file_details.results }}"
 
   - name: generate response file
@@ -75,8 +67,6 @@
      src: "templates/db_createdb_{{version}}.rsp.j2"
      dest: "{{ stage_directory }}/db_create_{{SID}}.rsp"
      mode: '0644'
-  
-  -name:  adding additional values to database creation(FS)
 
   - name: createdb 
     become: yes

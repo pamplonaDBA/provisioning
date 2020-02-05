@@ -1,13 +1,14 @@
 #  Pamplona 2020
 #  Playbook which sends a respone file and  uses it to install  Oracle restart/ CRS  / Grid on alone server
 #  requires
-#   env:                                     name of the server  which should be in the inventory
-#   type:                                 asm or dba
-#   version:                              version of database or asm
-#   vars/oracle_standard.yaml           standard values for Oracle
+#   env:                              name of the server  which should be in the inventory
+#   version:                          version of database or asm
+#   vars/oracle_standard.yaml        standard values for Oracle
 #   vars/oracle_files.yaml:          Info with the asm binaries 
 ---
 - hosts: "{{ env }}"
+  vars:
+    type: asm
   remote_user: ansible
   become: yes
   become_user: root

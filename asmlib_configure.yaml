@@ -32,16 +32,12 @@
      command:   /usr/sbin/oracleasm init
 
 
-   - name:     comprbamos
+   - name:     comprobamos
      command:      /usr/sbin/oracleasm status
      register:     oasm_status
      changed_when: false
      failed_when:  false
      no_log:       true
-
-   - debug:
-       var:         oasm_status
-       verbosity:   1
 
    - name:         estado
      command:      /usr/sbin/oracleasm status
