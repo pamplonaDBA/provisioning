@@ -1,4 +1,0 @@
-binaries:
-  - { file: "LINUX.X64_193000_grid_home.zip" , version: "19.3" , type: "asm" , response_file: "asm_binaries_19.3.rsp"}
-  - { file: "LINUX.X64_193000_db_home.zip"   , version: "19.3" , type: "db"  , response_file:"db_binaries_19.3.rsp" }
-
