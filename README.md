@@ -1,9 +1,8 @@
 ## oraansible
 
-#Ansible scripts used at [pamplona.name](http://clemente.pamplona.name/dba)
-
 Esta es una quequeña recopilacion de playbooks ansible para gestionar el proisionamiento de bases de datos Oracle.
 Por el momento el taller se base en sistemas Single Instance
+
 ## estructura
 La estructura es similar a la de los roles, teniendo:
 <pre>
@@ -20,8 +19,9 @@ La estructura es similar a la de los roles, teniendo:
         |- db_create_19.3.j2        Ejemplo de template para la icreacion de una base datos Single instance version 19.3
    |
    |- files
-        |-REQ03_createdb_TEST.yaml     Ejemplo de informacion de provisionamiento de  una base de datos 
+
         |-REQ01_asm_create_disks.yaml  Ejemplo de informacon de  provisionamiento de discos para el ASM 
+        |-REQ03_createdb_TEST.yaml     Ejemplo de informacion de provisionamiento de  una base de datos 
    |  
    |  
    | so_check.yaml                 Playbook que comprueba los prerrequisitos del sistema operativo  
