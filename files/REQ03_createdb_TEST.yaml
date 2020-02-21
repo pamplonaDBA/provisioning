@@ -5,4 +5,5 @@ dbsnmpPassword: "DBSNMPchangeme#2019.."
 storageType: "FS"
 characterSet: "US7ASCII"
 nationalCharacterSet: "AL16UTF16"
-totalMemory: "2014"
+totalMemory: 2014
+redolog_size: 50M
