@@ -1,0 +1,23 @@
+ansible    ALL=(oracle) NOPASSWD: ALL
+
+ansible    ALL=(root) NOPASSWD: ALL
+
+ansible ALL=(root) NOPASSWD:/u01/app/oracle/product/19.3/grid/root.sh
+
+ansible ALL=(root) NOPASSWD: sudoedit /etc/sudoers.d/ansible
+
+#Oracle_directories 
+ansible    ALL=(root) NOPASSWD: /usr/bin/chown -R oracle\:dba /u01/app/*, /usr/bin/chgrp -R dba /u01/app/*,/bin/chown -R oracle\:dba /u01/app/*
+
+#ASM install
+ansible    ALL=(root) NOPASSWD: /usr/sbin/asmtool, /usr/sbin/oracleasm,sudoedit /etc/logrotate.d/30-oracle_logs, sudoedit /etc/rsyslog.d/30-oracle.conf, /u01/app/oracle/product/19.3/grid/root.sh, /u01/app/oracle/product/*/grid/bin/perl,/u01/app/oracle/product/*/grid/gridSetup.sh,/u01/app/oracle/product/19.3/grid/root.sh
+
+
+
+#DB install
+ansible    ALL=(root) NOPASSWD: /u01/app/oracle/product/db*/root.sh
+
+#SO check
+ansible    ALL=(root) NOPASSWD: sudoedit  /etc/security/limits.d/30-oracle.conf , sudoedit /etc/sysctl.d/30-oracle.conf ,/sbin/service firewalld , /sbin/service selinux
+
+
