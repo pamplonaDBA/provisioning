@@ -3,8 +3,14 @@ binaries:
   - { file: "LINUX.X64_193000_db_home.zip"   , version: "19.3" , type: "db"  , response_file:"db_binaries_19.3.rsp" }
 
 PSU:
-  - { version: "11.2" ,type: "db",  patch: "29913194", date: "191015", description: "Patch 30128197: OJVM PATCH SET UPDATE 12.1.0.2.191015"  date: "191015",   file: "p29913194_112040_Linux-x86-64.zip" }
-  - { version: "12.1" ,type: "db",  patch: "30133412", date: "191015", description: "Combo of OJVM Component 12.1.0.2.191015 DB PSU + DB PSU 12.1.0.2.191015", file: "p30133412_121020_Linux-x86-64.zip" }
-  - { version: "12.1" ,type: "asm", patch: "30070257", date: "191015", description: "GRID INFRASTRUCTURE PATCH SET UPDATE 12.1.0.2.191015 (System Patch)",     file: "p30070257_121020_Linux-x86-64.zip" }
+  - { version: "11.2" ,type: "db",  patch: "29913194", date: "191015", file: "p29913194_112040_Linux-x86-64.zip",  description: "Patch 30128197: OJVM PATCH SET UPDATE 12.1.0.2.191015"  date: "191015"   }
+  - { version: "12.1" ,type: "db",  patch: "30133412", date: "191015", file: "p30133412_121020_Linux-x86-64.zip", description: "Combo of OJVM Component 12.1.0.2.191015 DB PSU + DB PSU 12.1.0.2.191015" }
+  - { version: "12.1" ,type: "asm", patch: "30070257", date: "191015", file: "p30070257_121020_Linux-x86-64.zip", description: "GRID INFRASTRUCTURE PATCH SET UPDATE 12.1.0.2.191015 (System Patch)" }
+  - { version: "12.2" ,type: "db",  patch: "30138470", date: "191015", file: "p30138470_122010_Linux-x86-64.zip", description: "DATABASE OCT 2019 RELEASE UPDATE 12.2.0.1.191015 (Patch)"}
+  - { version: "12.2" ,type: "db",  patch: "30133625", date: "191015", file: "p30133625_122010_Linux-x86-64.zip", description: "Patch 30133625: OJVM RELEASE UPDATE 12.2.0.1.191015"}
+  - { version: "12.2" ,type: "asm", patch: "30116802", date: "191015", file:"p30116802_122010_Linux-x86-64.zip", description: "GI OCT 2019 RELEASE UPDATE 12.2.0.1.191015 (System Patch)" }
 
-
+ 
+ #PSU documents
+ #Database 12.1.0.2 Proactive Patch Information (Doc ID 2285558.1)
+ #Database 12.2.0.1 Proactive Patch Information (Doc ID 2285557.1)
