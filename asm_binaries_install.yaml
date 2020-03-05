@@ -61,6 +61,7 @@
     args:
      chdir: "{{ oracle_home }}"
 
+
   - name: Configure CRS 
     shell: $GI_HOME/perl/bin/perl -I $GI_HOME/perl/lib -I $GI_HOME/crs/install $GI_HOME/crs/install/roothas.pl
     become: yes
