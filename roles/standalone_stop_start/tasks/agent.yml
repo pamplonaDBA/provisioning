@@ -1,0 +1,10 @@
+#Pamplona 2019 
+#  Playbook which will create / remove a blockout to the all server 
+#  requires
+#    req:              CRQ number to label the lackoutblackout
+#    duration:         duration of the blackout  ** NOT mandatory 
+#    action: 
+- name : banner
+  debug:
+    msg: " Agent stuff"
+    

@@ -1,39 +1,70 @@
-## oraansible
+## Oracle Ansible
+ Group of playbooks and roles to manage ORacle databases on linux environmets 
 
-Esta es una quequeña recopilacion de playbooks ansible para gestionar el proisionamiento de bases de datos Oracle.
-Por el momento el taller se base en sistemas Single Instance
 
-## estructura
-La estructura es similar a la de los roles, teniendo:
+ ## Files three
 <pre>
- Raiz
+ ## Provisioning
+Playbooks and roles for Oracle CRS and sigle instance provisioning 
+
+
+## Brief info
+
+<pre>
+ Root
    |
    |- vars:
-        |- oracle_standard.yaml      Fichero con los estandares del departamento
-        |- oracle_files.yaml         Fichero con la informacion fisica de los binarios 
-        |- so_19.3_requisites.yaml   Ejemplo de fichero de requisitos de S.O para oracle 19.3
-   |
-   |- templates
-        |- asm_binaries_19.3.rsp.j2 Ejemplo de template para la instalacion de binarios de asm la version 19.3
-        |- db_binaries_19.3.rsp.j2  Ejemplo de template para la instalacion de binarios de binarios  la version 19.3
-        |- db_create_19.3.j2        Ejemplo de template para la icreacion de una base datos Single instance version 19.3
+        |- main.yaml                     Specific rules an locations of our oracle department
+        |- oracle_files.yaml              Source  & patch files info and locations    
    |
    |- files
-
-        |-REQ01_asm_create_disks.yaml  Ejemplo de informacon de  provisionamiento de discos para el ASM 
-        |-REQ03_createdb_TEST.yaml     Ejemplo de informacion de provisionamiento de  una base de datos 
-   |  
-   |  
-   | so_check.yaml                 Playbook que comprueba los prerrequisitos del sistema operativo  
-   | oracle_directories.yaml       Playbook que comprueba el arbol de directorios de oracle
-   | unzip_binaries.yaml           Playbook generico que decomprime zips
-   | asm_binaries_install.yaml     Playbok  que installa los binarios de ASM  y registra el oracle restart sin ASM
-   | asmlib_configure.yaml         Playbook que configura el asmlib
-   | asmlib_create_disks.yaml         Playbook que configura los discos de ASM 
-   | asm_create.yaml               Playbook que crea una instancia +ASM con en el GRID y con los discos previamente instalados
-   | db_binaries_install.yaml      Playbook que instala los binarios del motor de base de datos
-   | db_createdb.yaml              Playbook que crea una base de datos
-
-
+        |-CRQ001_asm_create_disks.yaml      Example of asm disks provisioning
+        |-CRQ002_createdb_ASMTEST.yaml      Example of database provisioning
+        |-CRQ003_createdb_FSTEST.yaml       Example of database provisioning
+   |    
+   | - roles
+         |so_check                           Checks the pre requirements of S.O
+            -|
+             |vars
+                |-  OracleLinux_7_oracle_19.3_requisites.yaml      Prerrequisites for a installation of a 19.3 oracle files at OEL7
+            
+         |oracle_directories                 Role wich checks all required file structure exsists
+         |
+         |unzip_binaries                     Role wich unzips selected files 
+         |
+         |asm_binaries_install               Role wich install and setus the CRS = Listener          
+            |
+            |Templates 
+                |-asm_binaries_19.3.rsp.j2   Jinja files wich create the asm response file for 19.3 version 
+                |-asm_binaries_12.1.rsp.j2   Jinja files wich create the asm response file for 12.1 version 
+                |-asm_binaries_12.2.rsp.j2   Jinja files wich create the asm response file for 12.2 version 
+         |    
+         | asm_create                       Role which configures asmlib, create asmdisks, diskgroups and asm 
+         |
+         | db_create                        Role wich creates a database 
+            |
+            |Templates 
+                |-rdbms_createdb_19.3.rsp.j2   Jinja files wich create the rdbms response file for 19.3 version 
+                |-rdbms_createdb_12.1.rsp.j2   Jinja files wich create the rdbms response file for 12.1 version 
+                |-rdbms_createdb_12.2.rsp.j2   Jinja files wich create the rdbms response file for 12.2 version 
+         |
+         | stabdalone_stop_start              Role wich starts/stop all services on a alone oracle database server 
+             |
+             | scripts:
+                | -create_facts.sh          Scritp wich creates the local facts related to running oracle services
+             |       
+    |
+    | check_so_prerrequisites.yaml     Playbook wich checks the S.O  prerrequisites
+    |     
+    | asm_only_binaries                Playbook which install CRS listener and setup them
+    | 
+    | asm_full_install                 Playbook which install CRS,listeners, confiurres asmlib, create asmdisks,diskgroups and asm 
+    |
+    | db_binaries_install              Playbook wich installs and inventory database binaries 
+    |
+    | asmfull_plus_db_binaries         Playbook   which install CRS,listeners, confiurres asmlib, create asmdisks,diskgroups, asm and database binaries 
+    |
+    | db_createdb                      Playbook wich creates a database 
+         
 </pre>
 Para una explicacion mas en profundidad puees ver los post asociados a Ansible en http://clemente.pamplona.name/dba

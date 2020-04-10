@@ -1,0 +1,57 @@
+## Pamplona 2019 
+##  Playbook which installs crs, configure ASM disks,create asm instance and install database binaries 
+##  requires
+##   host: hostname to apply the kaybook which should be inventoried
+##    env:                             name of the server  which should be in the inventory
+##    req:                             number of request 
+##    asmversion:                         version of asm
+##    rdbmsversion:                         databse version
+##    vars/oracle_standard.yaml        configuration file with all the deppartment values
+##    vars/oracle_files.yaml           configuration file with all the  binarie locations
+#
+#
+---
+- hosts: "{{ env }}"
+  vars:
+    type: asm 
+    version: "{{  asmversion}}"
+  vars_files:
+    - "vars/main.yml"
+    - "vars/oracle_files.yml"
+  remote_user: "{{ansible_user}}"
+  
+  pre_tasks:
+  # Checking if we have the required variables
+  - fail: 
+        msg: | 
+         ERROR :   please check variables:
+         env :   name of the server  which should be in the inventory           
+     when:  item  is not defined
+     with_items:
+      - env 
+      - req  
+      - asmversion
+      - rdbmsversion
+     
+  roles:
+    - role: check_sid
+      vars:
+       sid: +ASM
+    - role: so_check
+    - role: oracle_directories
+    - role: unzip_binaries
+    - role: asm_binaries_install
+    - role: asm_create
+    - role: oracle_directories  
+      vars:
+        type: rdbms 
+        version: "{{ rdbmsversion }}"
+    - role: unzip_binaries
+      vars:
+         type: rdbms
+         version: "{{ rdbmsversion }}"
+    - role: db_binaries_install
+      vars:
+       type: rdbms
+       version: "{{ rdbmsversion }}"
+

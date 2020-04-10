@@ -1,0 +1,48 @@
+#  Pamplona 2019
+#  Playbook which sends a respone file and uses it ro install a database
+#
+# requires
+#   env:                                     name of the server  which should be in the inventory
+#   version:                                 version of db to install
+#     vars/oracle_standard.yaml   standard values for Oracle
+  - set_fact:
+     type : 'rdbms'
+      
+  - set_fact:
+     oracle_home: "{{oracle_home_directory.rdbms}}"
+
+  - name: "Constructing response file name from  {{version}}  {{type}}" 
+    set_fact:
+      response_file: "{{item.response_file}}"
+    with_items: "{{binaries}}"
+    when:  item.version == "{{version}}"  and  item.type == "{{type}}"
+
+  - name: generate response file
+    template:
+     src: "templates/{{ response_file }}.j2"
+     dest: "{{ stage_directory }}/{{response_file}}"
+     mode: '0644'
+    become: yes
+    become_user: "{{ oracle_user }}"
+
+## to improve, check if {{ oracle_home }}/runInstaller exsists
+##
+#
+  - name: Install Oracle 19c Database Software
+    shell: "{{ oracle_home }}/runInstaller -silent -responseFile {{ stage_directory }}/{{response_file}} -noconfig -ignorePrereqFailure"
+    become: yes
+    become_user: "{{ oracle_user }}"
+    ignore_errors: True
+
+  - name:  Executing orainstroot.sh
+    shell: "{{ oracle_inventory }}/orainstRoot.sh"
+    become: yes
+    become_user: "{{ root_user }}"
+    ignore_errors: True
+
+  - name:  Executing root.sh
+    shell: "{{ oracle_home }}/root.sh -silent"
+    become: yes
+    become_user: "{{ root_user }}"
+    ignore_errors: False
+

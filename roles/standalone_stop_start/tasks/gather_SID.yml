@@ -1,0 +1,52 @@
+# Pamplona 2020
+#  Playbook which gather ASM information
+---
+#
+
+ - name :  DB information
+   shell: "{{oracle_home}}/bin/srvctl config database -db {{oracle_sid}} "
+   register: command_output
+   environment:
+      ORACLE_HOME: "{{oracle_home}}"
+      ORACLE_SID:  "{{oracle_sid}}"
+      PATH: $PATH:$"{{oracle_home}}"/bin:/bin:/sbin:/user/bin:/usr/local/bin
+      LD_LIBRARY_PATH: $LD_LIBRARY_PATH:$"{{oracle_home}}"/lib
+   become: yes
+   become_user: "{{oracle_user}}"
+   ignore_errors: true 
+
+
+ - name: srvctl db  information 
+   blockinfile:
+      path: "{{logfile}}"
+      marker: ""
+      insertafter: EOF
+      block: |
+             --------------------  {{item}} config  -----------------------
+             {{command_output.stdout}}
+   become: yes
+   become_user: "{{oracle_user}}"
+
+ - name : env  information
+   shell:  "{{oracle_home}}/bin/srvctl getenv database -db {{oracle_sid}} "
+   register: command_output
+   environment:
+      ORACLE_HOME: "{{oracle_home}}"
+      ORACLE_SID:  "{{oracle_sid}}"
+      PATH: $PATH:$"{{ oracle_home}}"/bin:/bin:/sbin:/user/bin:/usr/local/bin
+      LD_LIBRARY_PATH: $LD_LIBRARY_PATH:$"{{oracle_home}}"
+   become: yes
+   become_user: "{{oracle_user}}"
+   ignore_errors: true  
+
+
+ - name: registering env  information
+   blockinfile:
+      path: "{{logfile}}"
+      insertafter: EOF
+      marker: ""
+      block: |
+             {{command_output.stdout}}
+   become: yes
+   become_user: "{{oracle_user}}"
+

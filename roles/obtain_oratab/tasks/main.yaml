@@ -1,0 +1,57 @@
+# Pamplona 2019 
+#  Playbook which registers in oratab variable the contents of the env oratab 
+#  requires env
+#  It will fail if no oratab file exsists or no databases defined a file 
+---
+## Obtaining oratab list 
+# OLD shell mode
+  - name: Converting ORACLE_SID to uppercase 
+    set_fact: 
+      SID: "{{sid|upper}}"
+
+
+  - name: check if oratab file exsists 
+    stat:
+      path: /etc/oratab
+    register: exsists
+    become: yes
+    become_user: "{{oracle_user}}"
+
+  - fail: 
+      msg: "ERROR: /etc/oratab file not found or not readable by user oracle"
+    when: exsists.stat.readable ==  False
+    ignore_errors: False 
+
+
+  - name: checking oratab contents 
+    shell: cat /etc/oratab|sed -e 's/# line added by Agent/ /g' -e 's/:/ /g' -e '/^$/d' |grep -v '#'|awk '{ print ("  - { oracle_sid=\""$1"\" ,ORACLE_HOME=\"" $2"\" }")}'
+    register: oratab
+
+  - name: Count number of  vaid SIDs
+    set_fact:
+     sid_number:  "{{ oratab.stdout_lines|length }}"
+
+  - name: Numero de instancias
+    debug:
+      var:  sid_number
+      verbosity: 2
+
+  - name: Fails if not instances found at oratab
+    fail: 
+      msg: "ERROR: number of instances register at {{env}} /etc/ratab file is {{sid_number}}"
+    when: sid_number == "0"
+
+  - name: Creating oratab xml file
+    copy:
+      dest: "/var/tmp/{{req|upper}}_oracle_components.yaml"
+      backup: yes
+      force: yes
+      content: |
+        # Shutdown file  for {{req|upper}} shutdown
+        #
+        DATABASES: 
+        {{ oratab.stdout.split(';')[0] }}
+    become: yes
+    become_user: "{{oracle_user}}"
+  
+

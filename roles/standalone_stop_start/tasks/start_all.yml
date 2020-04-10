@@ -1,0 +1,60 @@
+# Pamplona 2019 
+#   Playbook wich  stops and starts all the S.O  running resources 
+#   It will write a  file with the current setup of the database at HOME/logs/DATE_TIME_SHUTDOWN_ansible_date.log
+#  requires
+#    SID:                               oracle SID defined at /etc/oratab
+---
+- include: tasks/listener_start.yml
+  vars:
+    listener_name: "{{item}}"
+    oracle_home: "{{hostvars['alone.pamplona.name']['ansible_facts']['ansible_local']['listeners'][item]['oracle_home']}}"
+  with_items: "{{ansible_facts.ansible_local.listeners}}"
+ 
+   
+- include: tasks/listener_start.yml
+  vars:
+    listener_name: "{{item}}"
+    oracle_home: "{{hostvars['alone.pamplona.name']['ansible_facts']['ansible_local']['listeners'][item]['oracle_home']}}"
+  with_items: "{{ansible_facts.ansible_local.listeners}}"
+
+- include: tasks/asm_start.yml
+  vars:
+    oracle_sid: "{{item}}"
+    oracle_home: "{{hostvars['alone.pamplona.name']['ansible_facts']['ansible_local']['asm'][item]['oracle_home']}}"
+  with_items: "{{ansible_facts.ansible_local.asm}}"
+
+- include: tasks/databases_start.yml
+  vars:
+    oracle_sid: "{{item}}"
+    oracle_home: "{{hostvars['alone.pamplona.name']['ansible_facts']['ansible_local']['databases'][item]['oracle_home']}}"
+    activo:  "{{hostvars['alone.pamplona.name']['ansible_facts']['ansible_local']['databases'][item]['activo']}}"
+  with_items: "{{ansible_facts.ansible_local.databases}}"
+
+ 
+- include: tasks/agent.yml
+  vars:
+    duration: "04:00"
+    agent_action: remove 
+
+- include: tasks/agent.yml
+  vars:
+    agent_action: "{{action}}"
+
+
+
+- name : registering at log the remaining running processes  
+  shell: "ps -axf "
+  environment: 
+     PATH: "$PATH:/bin:/usr/bin:/bin:/usr/local/bin:/sbin"
+  ignore_errors: yes   
+  register: sid_running
+
+- name: setting header  
+  blockinfile:  
+    path: "{{logfile}}"
+    marker: "--#################   All database processes stpped   ###################"  
+    insertafter: EOF
+    block: |
+      {{sid_running.stdout}}
+      ########################################################################
+       End of process at  "{{ ansible_date_time.date}}:{{ansible_date_time.time}}"

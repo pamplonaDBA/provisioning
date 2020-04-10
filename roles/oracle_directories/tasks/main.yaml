@@ -1,0 +1,83 @@
+# Pamplona 2019 
+#  Playbook which create the required directories
+#   
+#   requires
+#     env:                                  name of the server  which should be in the inventory
+#     type:                                 type of installation [asm|rdbms]    
+#     version:                              version of database or asm
+#     vars/oracle_standard.yaml   standard values for Oracle
+---
+  - set_fact:  
+     oracle_home: "{{oracle_home_directory.rdbms}}"
+    when: type == "rdbms"
+
+  - set_fact:
+     oracle_home: "{{oracle_home_directory.asm}}"
+    when: type == "asm"
+
+#
+  - name: create  directories
+    file:
+      path: "{{ item }}"
+      state: directory
+      owner: "{{ oracle_user }}"
+      group: "{{ oracle_group }}"
+      mode: '0775'
+    become: yes
+    become_user: "{{oracle_user}}"
+    with_items:
+      - "{{ root_directory }}"
+      - "{{ oracle_inventory }}"
+      - "{{ oracle_base }}"
+      - "{{ oracle_home }}"
+      - "{{ oracle_scripts_dir }}"
+      - "{{ oracle_scripts_dir }}/rman"
+      - "{{ oracle_logs_dir }}"
+      - "{{ stage_directory }}"
+    ignore_errors: no
+    tags:
+      - create_directories
+      
+  - name: copy DBA team scripts 
+    copy:
+      src: "{{media_dir}}/scripts{{item.path}}{{item.file}}"
+      dest: "{{oracle_scripts_dir}}{{item.path}}{{item.file}}"
+      remote_src: yes
+      owner: "{{ oracle_user }}"
+      group: "{{ oracle_group }}"
+      mode: '0775'
+    become: yes
+    become_user: "{{oracle_user}}"
+    with_items: "{{SCRIPTS}}"
+    ignore_errors: no
+    tags:
+      - copy_scripts  
+      
+  - name: Adding envsel_new to profile 
+    lineinfile: 
+      dest: "{{oracle_user_home}}/.bash_profile"
+      line: |
+         # Added by ansible provisioning
+           alias se='. {{oracle_scripts_dir}}/ora_envsel_new.sh'
+           . {{oracle_scripts_dir}}/ora_envsel_new.sh
+      state: present
+      owner: oracle
+    become: yes
+    become_user: "{{oracle_user}}"
+    tags: ora_envsel
+
+  - name: Setp cron file 
+    copy:
+     dest: /var/spool/cron/oracle
+     content: |
+       PATH=PATH =$PATH:/usr/local/bin:$HOME/scripts
+       MAILTO=admins_oracledba@unicc.org
+     force: no
+     owner: "{{oracle_user}}"
+     group: "{{oracle_group}}"
+     mode: 0600
+    become: yes
+    become_user: "{{ root_user}}"
+    tags: crontab
+      
+ 

@@ -1,0 +1,60 @@
+# Pamplona 2020
+#  Playbook which creates a database
+#
+# requires
+#   env:                                     name of the server  which should be in the inventory
+#   SID:                                     Oracle SID
+#   version:                                 Version of the database
+#   vars/oracle_standard.yaml                 standard values for Oracle
+#   files/db_createdb_[SID]_[version]         specific values dor this db creation
+---
+  - name: Converting ORACLE_SID to uppercase
+    set_fact:
+     SID: "{{sid|upper}}"
+
+  - name: specific values dor this db creation
+    include_vars:
+      file: "files/{{req|upper}}_createdb_{{SID}}.yaml"
+
+  - set_fact:
+     oracle_home: "{{oracle_home_directory.db}}"
+    when: type == 'rdbms'
+ 
+  - debug: 
+      msg:
+      - "storageType  is set to {{storageType}}"
+      - "ORACLE_HOME  is set to {{oracle_home}}"
+
+  - name: If we are in a FS installation we check if directories exsists
+    stat:
+     path: "{{ item }}"
+    register: file_details
+    with_items:
+      - "/oradata/{{ SID }}/data"
+      - "/oradata/{{ SID }}/fra"
+      - "/oradata/{{ SID }}/temp"
+      - "/oradata/{{ SID }}/redo"
+   
+  - fail: 
+     msg: "ERROR: Directory {{item.item}}  do not exsists"
+    when: "item.stat.exists != True  and {{storageType}}=FS"
+    with_items: "{{ file_details.results }}"
+
+  - name: generate response file
+    become: yes
+    become_user: "{{ oracle_user}}"
+    template:
+     src: "templates/db_createdb_{{version}}.rsp.j2"
+     dest: "{{ stage_directory }}/db_create_{{SID}}.rsp"
+     mode: '0644'
+
+  - name: createdb 
+    become: yes
+    become_user: "{{oracle_user}}"    
+    shell: "{{ oracle_home }}/bin/dbca -silent -createDatabase  -ignorePreReqs -responseFile {{ stage_directory }}/db_create_{{SID}}.rsp"
+    args:
+      chdir: "{{ oracle_home }}"
+    environment:
+       CV_ASSUME_DISTID: OEL7.6
+
+

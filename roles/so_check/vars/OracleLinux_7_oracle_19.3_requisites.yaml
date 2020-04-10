@@ -1,0 +1,79 @@
+package_name :
+  - binutils
+  - oracleasm
+  - oracleasm-support
+  - compat-libcap1
+  - compat-libstdc++-33
+  - elfutils-libelf-devel
+  - fontconfig-devel
+  - glibc
+  - glibc-devel
+  - ksh
+  - libaio
+  - libaio-devel
+  - libdtrace-ctf-devel
+  - libXrender
+  - libXrender-devel
+  - libX11
+  - libXau
+  - libXi
+  - libXtst
+  - libgcc
+  - librdmacm-devel
+  - libstdc++
+  - libstdc++-devel
+  - libxcb
+  - make
+  - net-tools
+  - nfs-utils
+  - python
+  - python-configshell
+  - python-rtslib
+  - python-six
+  - targetcli
+  - smartmontools
+  - sysstat
+  - unzip 
+  - kmod-oracleasm
+  - oracleasm-support
+  - libXtst
+  - xorg-x11-utils
+  - psmisc
+
+kernel_values:
+  - { name: fs.file-max, value: 6815744 }
+  - { name: kernel.sem, value:  "250 32000 100 128" }
+  - { name: kernel.shmmni, value: 4096 }
+  - { name: kernel.shmall, value: 1073741824 }
+  - { name: kernel.shmmax, value: 4398046511104 }
+  - { name: kernel.panic_on_oops, value: 1 }
+  - { name: net.core.rmem_default, value: 262144 }
+  - { name: net.core.rmem_max, value: 4194304 }
+  - { name: net.core.wmem_default, value: 262144 }
+  - { name: net.core.wmem_max, value: 1048576 }
+  - { name: net.ipv4.conf.all.rp_filter, value: 2 }
+  - { name: net.ipv4.conf.default.rp_filter, value: 2 }
+  - { name: fs.aio-max-nr, value: 1048576 }
+  - { name: net.ipv4.ip_local_port_range, value: "9000 65500" }
+
+#60 percent huge pages
+huge_pages: "{{((0.6 * ansible_memtotal_mb)*1024/2)|round|int }}"
+
+limits:
+  - { tipo: 'soft' ,name: 'nproc', value: 16384 }
+  - { tipo: 'hard' ,name: 'nproc', value: 16384 }
+  - { tipo: 'soft' ,name: 'nofile', value: 4096 }
+  - { tipo: 'hard' ,name: 'nofile', value: 65536 }
+  - { tipo: 'soft' ,name: 'stack', value: 10240 }
+  - { tipo: 'hard' ,name: 'stack', value: 32768 }
+  - { tipo: 'soft' ,name: 'memlock', value: "{{ ((0.9 * ansible_memtotal_mb)*1024)|round|int }}" }
+  - { tipo: 'hard' ,name: 'memlock', value: "{{ ((0.9 * ansible_memtotal_mb)*1024)|round|int }}" }  
+
+firewalld: 
+ state: stopped
+ enabled: no
+
+selinux: 
+ state: disabled
+ policy: targeted
+

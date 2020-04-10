@@ -1,0 +1,40 @@
+# Pamplona 2020
+#  Playbook which gather ASM information
+---
+- name :  Obtain CRS information
+  shell:  "{{oracle_home}}/bin/crsctl stat res -t "
+  register: command_output
+  environment:
+    ORACLE_HOME: "{{ oracle_home}}"
+    ORACLE_SID:  "{{oracle_sid}}"
+    PATH: $PATH:$"{{ oracle_home}}"/bin
+    LD_LIBRARY_PATH: $LD_LIBRARY_PATH:$"{{ oracle_home}}"/lib
+
+- name: registering CRS  information 
+  blockinfile:
+    path: "{{logfile}}"
+    marker: ""
+    insertafter: EOF
+    block: |
+      #---------------------  CRS config  -----------------------
+        {{command_output.stdout}}
+
+- name : Obtain  ASM information
+  shell:  "{{oracle_home}}/bin/srvctl config asm "
+  register: command_output
+  environment:
+    ORACLE_HOME: "{{oracle_home}}"
+    ORACLE_SID:  "{{oracle_sid}}"
+    PATH: $PATH:$"{{ oracle_home}}"/bin
+    LD_LIBRARY_PATH: $LD_LIBRARY_PATH:$"{{ oracle_home}}"/lib
+
+- name: registering ASM  information
+  blockinfile:
+    path: "{{logfile}}"
+    marker: ""
+    insertafter: EOF
+    block: |
+      #--------------------  ASM config  -----------------------
+        {{command_output.stdout}}
+
+

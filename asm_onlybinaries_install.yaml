@@ -1,0 +1,35 @@
+# Pamplona 2019 
+#  Playbook which creates a CRS instance in the serer and configure the listenes. NO ASM disks 
+#  
+#  requires
+#   host: hostname to apply the kaybook which should beinventoried
+#    env:                             name of the server  which should be in the inventory
+#    vars/oracle_standard.yaml        configuration file with all the deppartment values
+---
+- hosts: "{{ env }}"
+  vars:
+    type: asm 
+  vars_files:
+    - "vars/oracle_standard.yaml"
+    - "vars/main.yml"
+  remote_user: "{{ansible_user}}"
+  pre_tasks:
+# Checking if we have the required variables
+  - fail: 
+        msg: | 
+         ERROR :   please check variables:
+          env :   name of the server  which should be in the inventory           
+     when:  item  is not defined
+     with_items:
+      - env 
+      - req  
+  
+  roles:
+    - role: check_sid
+      vars:
+        sid: +ASM
+    - role: so_check
+    - role: oracle_directories
+    - role: unzip_binaries
+    - role: asm_binaries_install
+   
