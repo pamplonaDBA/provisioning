@@ -7,7 +7,7 @@
 ---
 - name: gather local facts 
   script: files/create_facts.sh
-
+  when: operation|lower =="stop"
 - name: setting LOG variable
   set_fact:
       logfile: "{{oracle_user_home}}/logs/{{ ansible_date_time.date}}:{{ansible_date_time.time}}_{{operation|upper}}_by_ANSIBLE.log"
