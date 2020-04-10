@@ -1,9 +1,9 @@
 # Pamplona 2019 
 #   Playbook wich  stops and starts all the S.O  running resources 
 #   It will write a  file with the current setup of the database at HOME/logs/DATE_TIME_SHUTDOWN_ansible_date.log
-#  requires
-#    SID:                               oracle SID defined at /etc/oratab
----
+# 
+# 
+--
 - include: tasks/listener_start.yml
   vars:
     listener_name: "{{item}}"
