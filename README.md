@@ -48,12 +48,7 @@ Playbooks and roles for Oracle CRS and sigle instance provisioning
                 |-rdbms_createdb_12.1.rsp.j2   Jinja files wich create the rdbms response file for 12.1 version 
                 |-rdbms_createdb_12.2.rsp.j2   Jinja files wich create the rdbms response file for 12.2 version 
          |
-         | stabdalone_stop_start              Role wich starts/stop all services on a alone oracle database server 
-             |
-             | scripts:
-                | -create_facts.sh          Scritp wich creates the local facts related to running oracle services
-             |       
-    |
+         |
     | check_so_prerrequisites.yaml     Playbook wich checks the S.O  prerrequisites
     |     
     | asm_only_binaries                Playbook which install CRS listener and setup them
