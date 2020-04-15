@@ -1,0 +1,86 @@
+#  Pamplona 2020
+#  Playbook which sends a respone file and  uses it to install  Oracle restart/ CRS  / Grid on alone server
+#  requires
+#   env:                              name of the server  which should be in the inventory
+#   version:                          version of database or asm
+#   vars/main.yaml        standard values for Oracle
+#   vars/oracle_files.yaml:          Info with the asm binaries 
+---
+  - name:  retrieve the oracle_home
+    set_fact: 
+     oracle_home: "{{oracle_home_directory.asm}}"
+    when: type == 'asm'
+    
+  - name: Constructing response file name 
+    set_fact:
+      response_file: "{{item.response_file}}"
+    with_items: "{{binaries}}"
+    when:  item.version == "{{version}}"  and  item.type == "{{type}}"
+
+  - name: generate response file
+    template:
+     src: "templates/{{ response_file }}.j2"
+     dest: "{{ stage_directory }}/{{response_file}}"
+     mode: '0644'
+       
+  - name: Install Grid  19c Software
+    shell: "{{ oracle_home }}/gridSetup.sh  -silent -waitforcompletion -ignorePrereq  -noCopy -responseFile {{ stage_directory }}/{{response_file}}"
+    args:
+      chdir: "{{ oracle_home }}"
+    environment:
+      ORACLE_HOME: "{{ oracle_home }}"
+      GI_HOME: "{{ oracle_home }}"
+      ORACLE_BASE: "{{ oracle_base}}"
+    ignore_errors: yes
+    
+##OraInventory 
+  - name: "checking if exsists {{ oracle_inventory }}/orainstRoot.sh"
+    stat:
+      path: "/etc/oraInst.loc"
+    register: invfile
+  
+  - name:  "Executing {{ oracle_inventory }}/orainstRoot.sh if  /etc/oraInst.loc is not defined"
+    shell: "/u01/app/oraInventory/orainstRoot.sh"
+    become: yes
+    become_user: "{{root_user}}"
+    when: not invfile.stat.exists
+    ignore_errors: False
+## 
+
+  - name: "Executing  root.sh at   {{ oracle_home }}/root.sh"
+    shell: "{{ oracle_home }}/root.sh"
+    become: yes
+    become_user: "{{root_user}}"
+    ignore_errors: False
+  
+  - name: Configure CRS 
+    shell: $GI_HOME/perl/bin/perl -I $GI_HOME/perl/lib -I $GI_HOME/crs/install $GI_HOME/crs/install/roothas.pl
+    become: yes
+    become_user: "{{root_user}}"
+    args:
+     chdir: "{{ oracle_home }}"
+    environment:
+      GI_HOME: "{{ oracle_home }}"
+      ORACLE_HOME: "{{ oracle_home }}"
+      ORACLE_BASE: "{{ oracle_base}}"
+    ignore_errors: yes
+
+  - name: Create listener
+    shell: "$GI_HOME/bin/srvctl add listener -listener LISTENER  -oraclehome  {{ oracle_home }}" 
+    args:
+     chdir: "{{ oracle_home }}"
+    environment:
+      GI_HOME: "{{ oracle_home }}"
+      ORACLE_HOME: "{{ oracle_home }}"
+      ORACLE_BASE: "{{ oracle_base}}"
+    ignore_errors: no
+
+  - name: Start listener
+    shell: $GI_HOME/bin/srvctl start listener -listener LISTENER 
+    args:
+     chdir: "{{ oracle_home }}"
+    environment:
+      GI_HOME: "{{ oracle_home }}"
+      ORACLE_BASE: "{{ oracle_base}}"
+    ignore_errors: no
+

@@ -21,13 +21,11 @@ PSU:
   - { version: "12.1", type: "rdbms", patch: "30502041", date: "200114", file: "p30502041_121020_Linux-x86-64.zip", description: "Patch 30502041: OJVM PATCH SET UPDATE 12.1.0.2.200114" }
   
 SCRIPTS: 
-  - { file: "ora_envsel_new.sh",               path: "/" }
-  - { file: "ora_trace.sh",                    path: "/" }
-  - { file: "register_db.sh",                  path: "/" }
-  - { file: "audit_trace_file_management.sh",  path: "/" } 
-  - { file: "rman_backup.sh",                  path: "/rman/" } 
-  - { file: "check_backup.sh",                 path: "/rman/" } 
-  - { file: "start_rman.sh",                   path: "/rman/" }
+  - { file: "script1.sh",      path: "/" }
+  - { file: "hosekeeping.sh",  path: "/" } 
+  - { file: "rman_backup.sh",   path: "/backup/" } 
+  - { file: "expdp_backup.sh",  path: "/backup/" } 
+ 
 
 
 

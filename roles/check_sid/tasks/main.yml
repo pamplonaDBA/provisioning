@@ -1,0 +1,29 @@
+# Pamplona 2019 
+#  Playbook which checks if the SID exsists at server ENV
+#   This is a control playbook, if the result is not true it will exsist with FAIL
+#  requires
+#    SID:                               oracle SID defined at /etc/oratab
+---
+#
+# - name:  "Find {{ sid }} at oratab"
+#   lineinfile: 
+#     dest: /etc/oratab
+#     regexp: "^{{ sid  }}"
+#     line: "{{ sid}}}:"
+
+# OLD shell mode
+  - name: Converting ORACLE_SID to uppercase 
+    set_fact: 
+      SID: "{{sid|upper}}"
+
+  - name: checking oratab
+    shell: "cat /etc/oratab|grep {{SID}}|sed -e 's/# line added by Agent/ /g' -e 's/:/ /g'|awk '{ print $1}' "
+    register: count
+
+  - name : Checking if "{{SID}}" is at oratab
+    fail:
+      msg: "ERROR: The ORACLE_SID {{ SID}} is defined at {{env}} /etc/oratab"
+    when: item ==  "{{SID}}"
+    with_items:
+     - "{{count.stdout_lines}}"
+

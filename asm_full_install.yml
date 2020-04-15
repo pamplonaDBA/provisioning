@@ -5,14 +5,12 @@
 #   host: hostname to apply the kaybook which should be inventoried
 #    env:                             name of the server  which should be in the inventory
 #    req:                             number of request 
-#    rdbmsversion:                         version of the database binaries 
 #    vars/oracle_standard.yaml        configuration file with all the deppartment values
 #    vars/oracle_files.yaml           configuration file with all the  binarie locations
-
 ---
 - hosts: "{{ env }}"
   vars:
-    type: rdbms 
+    type: asm 
   vars_files:
     - "vars/main.yml"
     - "vars/oracle_files.yml"
@@ -22,15 +20,19 @@
   # Checking if we have the required variables
    - fail: 
         msg: | 
-         ERROR :   please check variables:
-         env :   name of the server  which should be in the inventory  
-         rdbmsversion: version of the databse          
+         ERROR:   please check variables:
+             env:   name of the server  which should be in the inventory
+             req:    number of request for the backout  
      when:  item  is not defined
      with_items:
       - env 
-      - req  
-      - rdbmsversion
+      - req
+          
   roles:
-    - oracle_directories
-    - unzip_binaries
-    - db_binaries_install
+    - role: check_sid
+      vars:
+        sid: +ASM
+    - { role: oracle_directories , become: yes, become_user: "{{oracle_user}}" }
+    - { role: unzip_binaries , become: yes, become_user: "{{oracle_user}}" }
+    - { role: asm_binaries_install, become: yes, become_user: "{{oracle_user}}" }
+    - { role: asm_create, become: yes, become_user: "{{oracle_user}}" }

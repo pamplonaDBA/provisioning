@@ -1,0 +1,19 @@
+#ANSIBLE
+# Installation and management of software
+Cmnd_Alias SOFTWARE = /bin/rpm, /usr/bin/up2date, /usr/bin/yum
+### Services
+ Cmnd_Alias SERVICES = /sbin/service, /sbin/chkconfig, /usr/bin/systemctl
+### Storage
+ Cmnd_Alias STORAGE = /sbin/fdisk,/sbin/parted, /sbin/partprobe, /bin/mount, /bin/umount
+#Oracle_inventory
+ Cmnd_Alias ORAINVENTORY=/u01/app/oraInventory/orainstRoot.sh
+#ASMLIB
+ Cmnd_Alias ASMLIB= /usr/sbin/asmtool, /usr/sbin/oracleasm, sudoedit /etc/logrotate.d/30-oracle_logs, sudoedit /etc/rsyslog.d/30-oracle.conf
+#DB_INSTALL
+ Cmnd_Alias DB_INSTALL= /u01/app/oracle/product/[....]/dbhome[.]/root.sh
+#ASM_INSTALL
+ Cmnd_Alias ASM_INSTALL = /u01/app/oracle/product/[....]/grid/root.sh, /u01/app/oracle/product/[....]/grid/bin/perl,  /u01/app/oracle/product/[....]/grid/gridSetup.sh
+
+#
+svcautoope    ALL=(oracle) NOPASSWD:ALL
+svcautoope    ALL=(root)   NOPASSWD:SOFTWARE,SERVICES,STORAGE,ASMLIB,ORAINVENTORY,ASM_INSTALL,DB_INSTALL

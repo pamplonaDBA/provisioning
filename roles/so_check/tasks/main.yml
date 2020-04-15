@@ -1,0 +1,99 @@
+# Pamplona 2019 
+#  Playbook which checks if the hosts has all the requested prereequisites
+#  
+#  requires
+#    env:                             name of the server  which should be in the inventory
+#    vars/oracle_standard.yaml        configuration file with all the deppartment values
+#    vars/[Distribution]_[major_version}_oracle_[version]_requisites.yaml        configuration file with the packages required for this version of the software
+---
+  - name: "Including So {{version}} requisites"
+    include_vars:
+     file: "vars/{{ ansible_distribution }}_{{ ansible_distribution_major_version }}_oracle_{{version}}_requisites.yaml"
+
+  - name: Check if exsists the oracle group
+    group:
+     name: "{{ oracle_group}}"
+     gid: "{{oracle_gid}}"
+     state: present 
+    ignore_errors: false
+    tags: oragroup
+    
+  - name: Check if exsists the oracle user 
+    user:
+      name: "{{oracle_user}}"
+      uid:  "{{oracle_uid}}"  
+      group: "{{oracle_group}}"
+      shell: /bin/bash
+    ignore_errors: false  
+    tags: orauser    
+    
+
+  - name: check required S.O packages
+    yum:
+     name:  "{{package_name}}"
+     state: latest
+    tags: packages   
+            
+  - name: create oracle /etc/sysctl.d/30-oracle.conf  sysctl file
+    copy: 
+      dest: /etc/sysctl.d/30-oracle.conf
+      content: "#Oracle specific sysctl values"
+      force: no
+      owner: root
+      group: root
+      mode: 0644
+        
+  - name : Set required Kernel values
+    sysctl:
+      name: "{{ item.name }}"
+      value: "{{item.value}}"
+      state: present
+      sysctl_set: yes
+      sysctl_file: /etc/sysctl.d/30-oracle.conf
+    with_items: "{{kernel_values}}"
+    tags: sysctl
+
+  ##We execute Huge Pages separately
+  - name: Set Huge pages
+    sysctl:
+        name: vm.nr_hugepages
+        value: "{{huge_pages}}"  
+        sysctl_set: yes
+        state: present
+        sysctl_file: /etc/sysctl.d/30-oracle.conf     
+    tags: huge_pages
+    
+  - name: create oracle limits file
+    copy: 
+      dest: /etc/security/limits.d/30-oracle.conf
+      content: "#Oracle specific limit file"
+      force: no
+      owner: root
+      group: root
+      mode: 0644
+    tags: limits_file
+
+     
+  - name: Set  user Limits 
+    pam_limits:
+      domain: oracle
+      use_max: yes
+      limit_type: "{{ item.tipo }}"
+      limit_item: "{{ item.name }}"
+      value: "{{item.value}}"
+      dest: /etc/security/limits.d/30-oracle.conf
+    with_items: "{{limits}}"
+    tags: limits 
+        
+  - name: Disable firewall
+    service: 
+      name: firewalld 
+      state: stopped 
+      enabled: no
+    tags: firewall
+
+  - name:  disabling SElinux
+    selinux:
+     policy: targeted
+     state: disabled
+    tags: SELinux

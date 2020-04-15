@@ -1,0 +1,10 @@
+DATA:
+ - /dev/sdc
+ - /dev/sdd
+ - /dev/sde
+REDO1:
+ - /dev/sdf
+REDO2: 
+ - /dev/sdg
+FRA:
+ - /dev/sdh

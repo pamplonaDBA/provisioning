@@ -31,9 +31,8 @@
   roles:
     - role: check_sid
       vars:
-       sid: +ASM
-    - role: so_check
-    - role: oracle_directories
-    - role: unzip_binaries
-    - role: asm_binaries_install
-    - role: asm_create
+        sid: +ASM
+    - { role: oracle_directories , become: yes, become_user: "{{oracle_user}}" }
+    - { role: unzip_binaries , become: yes, become_user: "{{oracle_user}}" }
+    - { role: asm_binaries_install, become: yes, become_user: "{{oracle_user}}" }
+  
