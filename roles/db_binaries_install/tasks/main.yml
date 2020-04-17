@@ -35,11 +35,11 @@
     shell: "{{ oracle_inventory }}/orainstRoot.sh"
     become: yes
     become_user: "{{ root_user }}"
-    ignore_errors: True
+    
 
   - name:  Executing root.sh
     shell: "{{ oracle_home }}/root.sh -silent"
     become: yes
     become_user: "{{ root_user }}"
-    ignore_errors: False
+    
 
