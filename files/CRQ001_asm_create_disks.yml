@@ -1,12 +1,11 @@
 DATA:
   - /dev/sdc
-  - /dev/sdd
 
 FRA:
-  - /dev/sde
-
-REDO1:
   - /dev/sdf
 
+REDO1:
+  - /dev/sdd
+
 REDO2:
-  - /dev/sdg
+  - /dev/sde
