@@ -1,5 +1,5 @@
 binaries:
-  - { file: "linuxx64_12201_database.zip",   version: "12.2", type: "rdbms", response_file: "rdbms_binaries_19.2.rsp" }
+  - { file: "linuxx64_12201_database.zip",   version: "12.2", type: "rdbms", response_file: "rdbms_binaries_12.2.rsp" }
   - { file: "LINUX.X64_193000_grid_home.zip", version: "19.3", type: "asm",   response_file: "asm_binaries_19.3.rsp" }
   - { file: "LINUX.X64_193000_db_home.zip",   version: "19.3", type: "rdbms", response_file: "rdbms_binaries_19.3.rsp" }
 
