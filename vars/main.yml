@@ -14,7 +14,7 @@ oracle_hostname:                "{{ ansible_hostname|upper }}"
 oracle_scripts_dir:             "{{oracle_user_home}}/scripts"
 oracle_logs_dir:               "{{oracle_user_home}}/logs"
 oracle_home_directory:
-  rdbms:                        "{{oracle_base}}/product/{{version}}/dbhome2"
+  rdbms:                        "{{oracle_base}}/product/{{version}}/dbhome1"
   asm:                          "{{oracle_base}}/product/{{version}}/grid"
 response_file:                  "{{type}_{{action}}_{{version}}.rsp"
 data_location:          
