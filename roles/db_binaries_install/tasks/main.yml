@@ -22,18 +22,14 @@
      src: "templates/{{ response_file }}.j2"
      dest: "{{ stage_directory }}/{{response_file}}"
      mode: '0644'
-    become: yes
-    become_user: "{{ oracle_user }}"
-
+   
 ## to improve, check if {{ oracle_home }}/runInstaller exsists
 ##
 #
   - name: Install Oracle 19c Database Software
     shell: "{{ oracle_home }}/runInstaller -silent -responseFile {{ stage_directory }}/{{response_file}} -noconfig -ignorePrereqFailure"
     become: yes
-    become_user: "{{ oracle_user }}"
-    ignore_errors: True
-
+ 
   - name:  Executing orainstroot.sh
     shell: "{{ oracle_inventory }}/orainstRoot.sh"
     become: yes

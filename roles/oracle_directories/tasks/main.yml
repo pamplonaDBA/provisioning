@@ -52,6 +52,7 @@
   - name: Adding envsel_new to profile 
     lineinfile: 
       dest: "{{oracle_user_home}}/.bash_profile"
+      regexp: '^%ora_envsel_new.sh%'
       line: |
          # Added by ansible provisioning
            alias se='. {{oracle_scripts_dir}}/ora_envsel_new.sh'
@@ -83,5 +84,5 @@
     become: yes
     become_user: "{{ root_user}}"
     tags: crontab
-      
+    ignore_errors: yes      
  

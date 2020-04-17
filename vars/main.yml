@@ -1,4 +1,4 @@
-ansible_user:                   "ansible"
+ansible_user:                   "svcopeee"
 root_user:                      "root"
 oracle_user:                    "oracle"
 oracle_uid:                     "500"
@@ -31,4 +31,4 @@ redo2_location:
   ASM:                          "+{{oracle_hostname}}_REDO2'}}"
 sysasm_passd:                   "{{SET_sysasm_passd|default('changueme2020',true)}}"
 asmdbsnmp_passwd:               "{{SET_asmdbsnmp_passwd|default('changueme2020',true)}}"
-oracle_oem_home:                 "{{oracle_base}}/product/em13"
+oracle_oem_home:                 "{{oracle_base}}/product/em13c"

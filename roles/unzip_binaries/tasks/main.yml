@@ -5,8 +5,8 @@
 #       env:                                  name of the server  which should be in the inventory
 #       type:                                 type of installation [asm|rdbms]    
 #      version:                              version of database or asm
-#      vars/main.yaml                         standard values for Oracle
-#      vars/oracle_binaries.yaml              file information
+#      vars/main.yml                         standard values for Oracle
+#      vars/oracle_binaries.yml              file information
 #
 ---
   - name: constructing the zip file name and path 
