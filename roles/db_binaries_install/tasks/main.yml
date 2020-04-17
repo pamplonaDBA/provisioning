@@ -28,7 +28,8 @@
 #
   - name: Install Oracle 19c Database Software
     shell: "{{ oracle_home }}/runInstaller -silent -responseFile {{ stage_directory }}/{{response_file}} -noconfig -ignorePrereqFailure"
-    become: yes
+    register: install_output
+    ignore_errors: True
  
   - name:  Executing orainstroot.sh
     shell: "{{ oracle_inventory }}/orainstRoot.sh"
