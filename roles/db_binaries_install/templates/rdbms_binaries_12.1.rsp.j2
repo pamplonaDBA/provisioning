@@ -1,0 +1,19 @@
+oracle.install.responseFileVersion=/oracle/install/rspfmt_dbinstall_response_schema_v12.1.0
+oracle.install.option=INSTALL_DB_SWONLY
+ORACLE_HOSTNAME={{ env }}
+UNIX_GROUP_NAME={{ oracle_group }}
+INVENTORY_LOCATION={{ oracle_inventory }}
+ORACLE_HOME={{ oracle_home }}
+ORACLE_BASE={{ oracle_base }}
+SELECTED_LANGUAGES=en
+oracle.install.db.InstallEdition=EE
+ oracle.install.db.DBA_GROUP={ oracle_group }}
+ oracle.install.db.OPER_GROUP={{ oracle_group }}
+oracle.install.db.OSBACKUPDBA_GROUP={{ oracle_group }}
+racle.install.db.DGDBA_GROUP={{ oracle_group }}
+oracle.install.db.KMDBA_GROUP={{ oracle_group }}
+oracle.install.db.RACDBA_GROUP={{ oracle_group }}
+SECURITY_UPDATES_VIA_MYORACLESUPPORT=false
+DECLINE_SECURITY_UPDATES=true
+
+
