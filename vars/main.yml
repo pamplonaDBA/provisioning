@@ -1,4 +1,4 @@
-ansible_user:                   "svcopeee"
+ansible_user:                   "svcautoope"
 root_user:                      "root"
 oracle_user:                    "oracle"
 oracle_uid:                     "500"
