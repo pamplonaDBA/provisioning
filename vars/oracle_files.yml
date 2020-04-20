@@ -20,7 +20,8 @@ PSU:
   - { version: "11.2", type: "rdbms", patch: "30503372", date: "200114", file: "p30503372_112040_Linux-x86-64.zip", description: "Patch 30503372: OJVM PATCH SET UPDATE 11.2.0.4.200114" }
   - { version: "12.1", type: "rdbms", patch: "30340202", date: "200114", file: "p30340202_121020_Linux-x86-64.zip", description: "Patch 30340202: DATABASE PATCH SET UPDATE 12.1.0.2.200114" }
   - { version: "12.1", type: "rdbms", patch: "30502041", date: "200114", file: "p30502041_121020_Linux-x86-64.zip", description: "Patch 30502041: OJVM PATCH SET UPDATE 12.1.0.2.200114" }
-  
+  - { version: "12.1", type: "asm",   patch: "30805421", date: "200114", file: "p30805421_121020_Linux-x86-64.zip", description: "Patch 30805421: GRID INFRASTRUCTURE PATCH SET UPDATE 12.1.0.2.200414" } 
+
 SCRIPTS: 
   - { file: "script1.sh",      path: "/" }
   - { file: "hosekeeping.sh",  path: "/" } 
