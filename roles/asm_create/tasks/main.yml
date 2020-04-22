@@ -66,7 +66,7 @@
 
    - name: "Including {{req|upper}}  Disk setup"
      include_vars:
-       file: "files/{{req|upper}}_asm_create_disks.yml"
+       file: "files/{{req|upper}}.yml"
 
    - name: creating DATA disks
      shell: 
