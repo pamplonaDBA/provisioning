@@ -38,7 +38,8 @@
        ERROR: Oracle "{{version}}" binaries install failed
        check 
        {{install_output.stdout}}
-    when: "Suscessfully"  not in install_output.stdout 
+
+    when: '"Suscessfully"  not in install_output.stdout '
 
   - name:  Executing orainstroot.sh
     shell: "{{ oracle_inventory }}/orainstRoot.sh"
