@@ -5,9 +5,8 @@
 #   host: hostname to apply the kaybook which should be inventoried
 #    env:                             name of the server  which should be in the inventory
 #    req:                             number of request 
-#    version:                         version of the database binaries 
-#    vars/main.yaml        configuration file with all the deppartment values
-#    vars/oracle_files.yaml           configuration file with all the  binarie locations
+#    vars/main.yaml        configuration file with all the department values
+#    vars/REQ.yaml           configuration file all the database required info
 
 ---
 - hosts: "{{ env }}"
@@ -15,7 +14,7 @@
     type: rdbms 
   vars_files:
     - "vars/main.yml"
-    - "vars/oracle_files.yml"
+    - "vars/{{req|upper}}.yml"
   remote_user: "{{ansible_user}}"
   
   pre_tasks:
@@ -28,7 +27,10 @@
       - req
       - version
       - sid 
-      
+  - name: Converting ORACLE_SID to uppercase
+    set_fact:
+     SID: "{{sid|upper}}"  
   roles:
+     - { role:  db_check_sid, become: yes, become_user: "{{oracle_user}}" }
      - { role:  db_create_database, become: yes, become_user: "{{oracle_user}}" }
 

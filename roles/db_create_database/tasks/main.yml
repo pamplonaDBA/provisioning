@@ -4,18 +4,11 @@
 # requires
 #   env:                                     name of the server  which should be in the inventory
 #   SID:                                     Oracle SID
-#   version:                                 Version of the database
+#   version:                                  Version of the database
+#   req:                                     request number with the database creation information
 #   vars/oracle_standard.yaml                 standard values for Oracle
-#   files/db_createdb_[SID]_[version]         specific values dor this db creation
+#   files/REQ.yml         specific values dor this db creation
 ---
-  - name: Converting ORACLE_SID to uppercase
-    set_fact:
-     SID: "{{sid|upper}}"
-
-  - name: specific values dor this db creation
-    include_vars:
-      file: "files/{{req|upper}}_createdb_{{SID}}.yml"
-
   - set_fact:
      oracle_home: "{{oracle_home_directory.rdbms}}"
     when: type == 'rdbms'
@@ -44,13 +37,13 @@
     become_user: "{{ oracle_user}}"
     template:
      src: "templates/db_createdb_{{version}}.rsp.j2"
-     dest: "{{ stage_directory }}/db_create_{{SID}}.rsp"
+     dest: "{{ stage_directory }}/db_createdb_{{SID}}.rsp"
      mode: '0644'
 
   - name: createdb 
     become: yes
     become_user: "{{oracle_user}}"    
-    shell: "{{ oracle_home }}/bin/dbca -silent -createDatabase  -ignorePreReqs -responseFile {{ stage_directory }}/db_create_{{SID}}.rsp"
+    shell: "{{ oracle_home }}/bin/dbca -silent -createDatabase  -ignorePreReqs -responseFile {{ stage_directory }}/db_createdb_{{SID}}.rsp"
     args:
       chdir: "{{ oracle_home }}"
     environment:

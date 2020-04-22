@@ -1,3 +1,5 @@
+version: 19.3
+sid: "ASMTEST"
 database_type: "SI"
 sysPassword : "SYSchangeme#2019.."
 systemPassword: "SYSTEMchangeme#2019.."
