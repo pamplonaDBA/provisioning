@@ -71,7 +71,7 @@
               PATH =$PATH:/bin:/usr/bin:/sbin:/usr/local/sbin:/usr/sbin:/usr/local/bin:$HOME/scripts
               MAILTO=admins_oracledba@company.org
               # Housekeeping
-              01 00 * * *  "{{oracle_scripts_dir}}"/audit_trace_file_management.sh 31 &>/dev/null
+              01 00 * * *  {{oracle_scripts_dir}}/audit_trace_file_management.sh 31 &>/dev/null
 
      force: no
      owner: "{{oracle_user}}"
