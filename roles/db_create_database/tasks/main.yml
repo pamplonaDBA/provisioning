@@ -9,10 +9,11 @@
 #   vars/oracle_standard.yaml                 standard values for Oracle
 #   files/REQ.yml         specific values dor this db creation
 ---
-  - set_fact:
-     oracle_home: "{{oracle_home_directory.rdbms}}"
-    when: type == 'rdbms'
- 
+  - name: setting variables 
+     set_fact:
+         oracle_home: "{{oracle_home_directory.rdbms}}"
+         datafileDestination: "{{ lookup('vars', 'data_location'.[storageType])}}"
+   
   - debug: 
       msg: |
          storageType  is set to {{storageType}}
