@@ -12,7 +12,7 @@
   - name: setting variables 
     set_fact:
          oracle_home: "{{oracle_home_directory.rdbms}}"
-         datafileDestination: "{{data_location.ASM}}"
+         datafileDestination: "{{'data_location'.[storageType]}}"
    
   - name: debug
     debug: 
