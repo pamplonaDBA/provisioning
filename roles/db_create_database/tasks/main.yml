@@ -29,19 +29,15 @@
 ## in case of FS check if its mount point and create the subfolders
   - name: If we are in a FS installation we check if directories exsists
     stat:
-     path: "{{ item }}"
+      path: "{{ item }}"
     register: file_details
     with_items:
       - "/oradata/{{ SID }}/data"
       - "/oradata/{{ SID }}/fra"
       - "/oradata/{{ SID }}/temp"
       - "/oradata/{{ SID }}/redo"
-
-   
-  - fail: 
-      msg: "ERROR: Directory {{item.item}}  do not exsists"
-    when: "item.stat.exists != True  and {{storageType}}=FS"
-    with_items: "{{ file_details.results }}"
+    when:'storageType=FS'
+ 
 
   - name: generate response file
     become: yes
