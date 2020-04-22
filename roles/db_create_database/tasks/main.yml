@@ -21,9 +21,9 @@
     when: type == 'rdbms'
  
   - debug: 
-      msg:
-      - "storageType  is set to {{storageType}}"
-      - "ORACLE_HOME  is set to {{oracle_home}}"
+      msg: |
+         storageType  is set to {{storageType}}
+         ORACLE_HOME  is set to {{oracle_home}}
 
   - name: If we are in a FS installation we check if directories exsists
     stat:
@@ -34,6 +34,7 @@
       - "/oradata/{{ SID }}/fra"
       - "/oradata/{{ SID }}/temp"
       - "/oradata/{{ SID }}/redo"
+
    
   - fail: 
      msg: "ERROR: Directory {{item.item}}  do not exsists"
