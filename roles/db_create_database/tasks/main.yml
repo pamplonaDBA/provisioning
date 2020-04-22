@@ -12,7 +12,7 @@
   - name: setting variables 
     set_fact:
          oracle_home: "{{oracle_home_directory.rdbms}}"
-         datafileDestination: "{{ ansible_local 'data_location.asm}}"
+         datafileDestination: "{{data_location.asm}}"
    
   - name: debug
     debug: 
