@@ -30,4 +30,6 @@
       - sid 
       
   roles:
-   - { role: db_create_database, become: yes, become_user: "{{oracle_user}}" }
+    - { role:  oracle_directories, become: yes, become_user: "{{oracle_user}}" }
+    - { role:  db_create_database, become: yes, become_user: "{{oracle_user}}" }
+
