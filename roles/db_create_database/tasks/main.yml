@@ -10,7 +10,7 @@
 #   files/REQ.yml         specific values dor this db creation
 ---
   - name: setting variables 
-     set_fact:
+    set_fact:
          oracle_home: "{{oracle_home_directory.rdbms}}"
          datafileDestination: "{{ lookup('vars', 'data_location'.[storageType])}}"
    
