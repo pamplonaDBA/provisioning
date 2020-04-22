@@ -29,5 +29,5 @@
       - version
       - sid 
       
-roles:
-  - { role: db_create_database, become: yes, become_user: "{{oracle_user}}" }
+  roles:
+   - { role: db_create_database, become: yes, become_user: "{{oracle_user}}" }
