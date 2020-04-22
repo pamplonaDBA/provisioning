@@ -23,9 +23,7 @@
      dest: "{{ stage_directory }}/{{response_file}}"
      mode: '0644'
    
-## to improve, check if {{ oracle_home }}/runInstaller exsists
-##
-#
+
   - name: Install Oracle 19c Database Software
     shell: "{{ oracle_home }}/runInstaller -silent -responseFile {{ stage_directory }}/{{response_file}} -noconfig -ignorePrereqFailure"
     register: install_output
@@ -38,7 +36,6 @@
        ERROR: Oracle "{{version}}" binaries install failed
        check 
        {{install_output.stdout}}
-
     when: '"Suscessfully"  not in install_output.stdout '
 
   - name:  Executing orainstroot.sh
