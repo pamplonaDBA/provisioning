@@ -14,7 +14,7 @@
 
   - name: specific values dor this db creation
     include_vars:
-      file: "files/{{req|upper}}_createdb_{{SID}}.yaml"
+      file: "files/{{req|upper}}_createdb_{{SID}}.yml"
 
   - set_fact:
      oracle_home: "{{oracle_home_directory.db}}"
