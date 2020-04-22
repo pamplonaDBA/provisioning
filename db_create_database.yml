@@ -14,7 +14,7 @@
     type: rdbms 
   vars_files:
     - "vars/main.yml"
-    - "vars/{{req|upper}}.yml"
+    - "files/{{req|upper}}.yml"
   remote_user: "{{ansible_user}}"
   
   pre_tasks:
