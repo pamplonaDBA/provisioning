@@ -48,18 +48,14 @@
     ignore_errors: no
     tags:
       - copy_scripts  
-      
- # - name: Adding envsel_new to profile 
- #   lineinfile: 
- #     dest: "{{oracle_user_home}}/.bash_profile"
- #     regexp: '^%ora_envsel_new.sh%'
- #     line: |
- #        # Added by ansible provisioning
- #          alias se='. {{oracle_scripts_dir}}/ora_envsel_new.sh'
- #          . {{oracle_scripts_dir}}/ora_envsel_new.sh
- #     state: present
- #     owner: oracle
- #   tags: ora_envsel
+
+  - name: Adding envsel_new to profile
+    lineinfile:
+     dest: "{{oracle_user_home}}/.bash_profile"
+     regexp: 'alias $ora_envsel_new.sh$'
+     line: alias se='. {{oracle_scripts_dir}}/ora_envsel_new.sh'
+     state: present
+    tags: ora_envsel
 
   - name: Setp cron file 
     copy:
