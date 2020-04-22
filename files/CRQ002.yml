@@ -8,3 +8,4 @@ storageType: "ASM"
 characterSet: "US7ASCII"
 nationalCharacterSet: "AL16UTF16"
 totalMemory: "2014"
+initparams: 
