@@ -14,7 +14,8 @@
          oracle_home: "{{oracle_home_directory.rdbms}}"
          datafileDestination: "{{ lookup('vars', 'data_location'.[storageType])}}"
    
-  - debug: 
+  - name: debug
+    debug: 
       msg: |
          storageType  is set to {{storageType}}
          ORACLE_HOME  is set to {{oracle_home}}
