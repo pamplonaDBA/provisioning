@@ -17,7 +17,7 @@
       file: "files/{{req|upper}}_createdb_{{SID}}.yml"
 
   - set_fact:
-     oracle_home: "{{oracle_home_directory.db}}"
+     oracle_home: "{{oracle_home_directory.rdbms}}"
     when: type == 'rdbms'
  
   - debug: 
@@ -25,6 +25,8 @@
          storageType  is set to {{storageType}}
          ORACLE_HOME  is set to {{oracle_home}}
 
+## to improve
+## in case of FS check if its mount point and create the subfolders
   - name: If we are in a FS installation we check if directories exsists
     stat:
      path: "{{ item }}"
@@ -37,7 +39,7 @@
 
    
   - fail: 
-     msg: "ERROR: Directory {{item.item}}  do not exsists"
+      msg: "ERROR: Directory {{item.item}}  do not exsists"
     when: "item.stat.exists != True  and {{storageType}}=FS"
     with_items: "{{ file_details.results }}"
 
