@@ -19,16 +19,16 @@ oracle_home_directory:
 response_file:                  "{{type}_{{action}}_{{version}}.rsp"
 data_location:          
  FS:                            "/oradata/{{SID}}/data"
- ASM:                           "+{{oracle_hostname}}_DATA'}}"
+ ASM:                           "+{{oracle_hostname}}_DATA"
 fra_location:
   FS:                           "/oradata/{{SID}}/data"
-  ASM:                          "+{{oracle_hostname}}_FRA'}}"
+  ASM:                          "+{{oracle_hostname}}_FRA"
 redo1_location:
   FS:                           "/oradata/{{SID}}/redo"
-  ASM:                          "+{{oracle_hostname}}_REDO1'}}"
+  ASM:                          "+{{oracle_hostname}}_REDO1"
 redo2_location:
   FS:                           "/oradata/{{SID}}/redo"
-  ASM:                          "+{{oracle_hostname}}_REDO2'}}"
+  ASM:                          "+{{oracle_hostname}}_REDO2"
 sysasm_passd:                   "{{SET_sysasm_passd|default('changueme2020',true)}}"
 asmdbsnmp_passwd:               "{{SET_asmdbsnmp_passwd|default('changueme2020',true)}}"
 oracle_oem_home:                 "{{oracle_base}}/product/em13c"
