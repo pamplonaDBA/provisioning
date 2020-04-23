@@ -8,3 +8,6 @@ REDO2:
  - /dev/sdg
 FRA:
  - /dev/sdh
+
+ sysasm_passd:                   "{{SET_sysasm_passd|default('changueme2020',true)}}"
+asmdbsnmp_passwd:               "{{SET_asmdbsnmp_passwd|default('changueme2020',true)}}"

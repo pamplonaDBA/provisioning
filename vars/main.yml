@@ -9,6 +9,7 @@ media_dir:                      "/mnt/media"
 root_directory:                 "/u01/app"
 oracle_inventory:               "{{root_directory}}/oraInventory"
 oracle_base:                    "{{root_directory}}/oracle"
+oracle_oem_home:                 "{{oracle_base}}/product/em13c"
 stage_directory:                "{{oracle_base}}/stage"
 oracle_hostname:                "{{ ansible_hostname|upper }}"
 oracle_scripts_dir:             "{{oracle_user_home}}/scripts"
@@ -29,6 +30,4 @@ redo1_location:
 redo2_location:
   FS:                           "/oradata/{{SID}}/redo"
   ASM:                          "+{{oracle_hostname}}_REDO2"
-sysasm_passd:                   "{{SET_sysasm_passd|default('changueme2020',true)}}"
-asmdbsnmp_passwd:               "{{SET_asmdbsnmp_passwd|default('changueme2020',true)}}"
-oracle_oem_home:                 "{{oracle_base}}/product/em13c"
+
