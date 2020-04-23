@@ -43,5 +43,7 @@
        ORACLE_HOME: "{{ oracle_home }}"
        TNS_ADMIN: "{{ oracle_home }}/network/admin"
        PATH: "$PATH:{{ oracle_home }}/bin"
+       LIBPATH: "$LIBPATH:{{ oracle_home }}/lib:{{ oracle_home }}/ctx/lib"
+       LD_LIBRARY_PATH: "$LD_LIBRARY_PATH:{{ oracle_home }}/lib"
 
 
