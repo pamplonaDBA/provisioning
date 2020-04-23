@@ -11,11 +11,11 @@
 ---
   - name: setting variables 
     set_fact:
-         oracle_home: "{{oracle_home_directory.rdbms}}"
-         datafileDestination: "{{data_location.FS}}"
-         recoveryAreaDestination: "{{fra_location.FS}}"
-         diskGroupName: "{{data_location.ASM}}"
-         recoveryGroupName: "{{fra_location.ASM}}"
+         oracle_home: {{oracle_home_directory.rdbms}}
+         datafileDestination: {{data_location.FS}}
+         recoveryAreaDestination: {{fra_location.FS}}
+         diskGroupName: {{data_location.ASM}}
+         recoveryGroupName: {{fra_location.ASM}}
    
   - name: debug
     debug: 
