@@ -40,5 +40,8 @@
       chdir: "{{ oracle_home }}"
     environment:
        CV_ASSUME_DISTID: OEL7.6
+       ORACLE_HOME: "{{ oracle_home }}"
+       TNS_ADMIN: "{{ oracle_home }}"/network/admin
+       PATH: $PATH:"{{ oracle_home }}"/bin
 
 
