@@ -438,7 +438,7 @@ storageType={{storageType}}
 # Default value : DATA
 # Mandatory     : No
 #-----------------------------------------------------------------------------
-diskGroupName={{diskGroupName}}
+diskGroupName={{diskGroupName}}/{DB_UNIQUE_NAME}/
 
 #-----------------------------------------------------------------------------
 # Name          : asmsnmpPassword
@@ -456,7 +456,7 @@ asmsnmpPassword=
 # Default value : RECOVERY
 # Mandatory     : No
 #-----------------------------------------------------------------------------
-recoveryGroupName={{recoveryGroupName}}
+recoveryGroupName={{recoveryGroupName}}/{DB_UNIQUE_NAME}/
 
 #-----------------------------------------------------------------------------
 # Name          : characterSet
@@ -553,7 +553,9 @@ variables=
 # Default value : None
 # Mandatory     : NO
 #-----------------------------------------------------------------------------
-initParams=
+initParams=undo_tablespace=UNDOTBS1,diagnostic_dest={ORACLE_BASE},remote_login_passwordfile=EXCLUSIVE,db_create_file_dest={{diskGroupName}}/{DB_UNIQUE_NAME}/,audit_file_dest={ORACLE_BASE}/admin/{DB_UNIQUE_NAME}/adump,db_recovery_file_dest={{recoveryGroupName}}/{DB_UNIQUE_NAME}
+
+
 
 #-----------------------------------------------------------------------------
 # Name          : sampleSchema
