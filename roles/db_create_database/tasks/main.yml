@@ -23,19 +23,6 @@
          storageType  is set to {{storageType}}
          ORACLE_HOME  is set to {{oracle_home}}
 
-## to improve
-## in case of FS check if its mount point and create the subfolders
-#  - name: If we are in a FS installation we check if directories exsists
-#    stat:
-#      path: "{{ item }}"
-#    register: file_details
-#    with_items:
-#      - "/oradata/{{ SID }}/data"
-#      - "/oradata/{{ SID }}/fra"
-#      - "/oradata/{{ SID }}/temp"
-#      - "/oradata/{{ SID }}/redo"
-#    when:'storageType=FS'
- 
 
   - name: generate response file
     become: yes
