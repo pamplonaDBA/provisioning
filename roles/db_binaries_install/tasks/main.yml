@@ -42,7 +42,6 @@
     become: yes
     become_user: "{{ root_user }}"
     
-
   - name:  Executing root.sh
     shell: "{{ oracle_home }}/root.sh -silent"
     become: yes
