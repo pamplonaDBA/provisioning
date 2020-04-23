@@ -56,5 +56,4 @@
                 DIAG_ADR_ENABLED=ON
                 SQLNET.EXPIRE_TIME= 10
                 SQLNET.INBOUND_CONNECT_TIMEOUT=60        
-    force: no
-    tags: sqlnet
+      tags: sqlnet
