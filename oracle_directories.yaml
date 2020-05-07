@@ -2,7 +2,6 @@
 #  Playbook which check the S.O compliance (directories)
 #  
 #  requires
-#   host: hostname to apply the kaybook which should be inventoried
 #    env:                             name of the server  which should be in the inventory
 #    vars/oracle_standard.yaml        configuration file with all the deppartment values
 #    vars/oracle_files.yaml           configuration file with all the  binarie locations
