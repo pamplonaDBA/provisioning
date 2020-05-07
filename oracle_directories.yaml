@@ -28,10 +28,7 @@
     
           
   roles:
-    - role: check_sid
-      vars:
-        sid: +ASM
-    - { role: oracle_directories , become: yes, become_user: "{{oracle_user}}" }
+   - { role: oracle_directories , become: yes, become_user: "{{oracle_user}}" }
    
    
   
