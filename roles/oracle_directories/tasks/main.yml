@@ -39,7 +39,7 @@
       
   - name: copy DBA team scripts 
     copy:
-      src: "{{media_dir}}/{{item.rsrcpath}}/{{item.file}}"
+      src: "{{media_dir}}/{{item.srcpath}}/{{item.file}}"
       dest: "{{item.dstpath}}/{{item.file}}"
       remote_src: yes
       owner: "{{ oracle_user }}"
