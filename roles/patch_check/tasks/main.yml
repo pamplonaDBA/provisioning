@@ -25,7 +25,7 @@
     dest: "{{stage_directory}}"
 
 - name: Check opatch version  
-  shell: "{{oracle_home}}/Opatch/opatch rereq CheckMinimumOPatchVersion  -phBaseDir {{stage_directory}}/{{patch}}"
+  shell: "{{oracle_home}}/OPatch/opatch rereq CheckMinimumOPatchVersion  -phBaseDir {{stage_directory}}/{{patch}}"
   args:
     chdir: "{{ oracle_home }}"
   environment:
@@ -38,7 +38,7 @@
   tags: opatch_version
 
 - name: check opatch conflics
-  shell: "{{oracle_home}}/Opatch/opatch prereq CheckConflictAgainstOHWithDetail -ph {{stage_directory}}/{{patch}}"
+  shell: "{{oracle_home}}/OPatch/opatch prereq CheckConflictAgainstOHWithDetail -ph {{stage_directory}}/{{patch}}"
   args:
     chdir: "{{ oracle_home }}"
   environment:
