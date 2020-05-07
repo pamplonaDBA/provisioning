@@ -34,7 +34,7 @@
       - binaries_route     
           
   roles:
-   - { role: patch_check , become: yes, become_user: "{{oracle_user}}" }
+   - { role: patch_check , become: yes, become_user: "{{oracle_user}}", oracle_home: "{{binaries_route}}" }
    
    
   
