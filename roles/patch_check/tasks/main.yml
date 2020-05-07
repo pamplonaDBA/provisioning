@@ -23,15 +23,14 @@
     when: exsists.stat.readable ==  False
     ignore_errors: False 
 
-  - name : unzip the patch
-      unarchive:
-      src: "{{patch_file}}"
-      remote_src: yes
-      dest: "{{stage_directory}}"
-    
-  -name: check opatch prereequisite
-   shell:
-    command: "{{oracle_home}}/Opatch/opatch prereq CheckConflictAgainstOHWithDetail -ph {{stage_directory}}/{{patch}}"
+- name : unzip the patch
+  unarchive:
+    src: "{{patch_file}}"
+    remote_src: yes
+    dest: "{{stage_directory}}"
+
+- name: minimm version 
+  shell: "{{oracle_home}}/Opatch/opatch rereq CheckMinimumOPatchVersion  -phBaseDir {{stage_directory}}/{{patch}}"
     args:
       chdir: "{{ oracle_home }}"
     environment:
@@ -40,8 +39,19 @@
        PATH: "$PATH:{{ oracle_home }}/bin"
        LIBPATH: "$LIBPATH:{{ oracle_home }}/lib:{{ oracle_home }}/ctx/lib"
        LD_LIBRARY_PATH: "$LD_LIBRARY_PATH:{{ oracle_home }}/lib"
+  register: opatch_output
+  tags: opatch_version
 
- # - name: check conflicts 
-
-
-  
+- name: check opatch conflics
+  shell:
+  command: "{{oracle_home}}/Opatch/opatch prereq CheckConflictAgainstOHWithDetail -ph {{stage_directory}}/{{patch}}"
+  args:
+      chdir: "{{ oracle_home }}"
+  environment:
+       CV_ASSUME_DISTID: OEL7.6
+       ORACLE_HOME: "{{ oracle_home }}"
+       PATH: "$PATH:{{ oracle_home }}/bin"
+       LIBPATH: "$LIBPATH:{{ oracle_home }}/lib:{{ oracle_home }}/ctx/lib"
+       LD_LIBRARY_PATH: "$LD_LIBRARY_PATH:{{ oracle_home }}/lib"
+  register: opatch_output
+  tags: opatch_conflicts
