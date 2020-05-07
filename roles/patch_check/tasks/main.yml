@@ -1,11 +1,7 @@
 # Pamplona 2019 
-#  Playbook which create the required directories
+#  Playbook which checks is a patch is applicabe to a orale home 
 #   
-#   requires
-#     env:                                  name of the server  which should be in the inventory
-#     type:                                 type of installation [asm|rdbms]    
-#     version:                              version of database or asm
-#     vars/main.yaml                        standard values for Oracle
+
 ---
 - name: patch full file 
   set_fact:
@@ -19,10 +15,9 @@
   register: exsists 
 
 - fail:
-      msg: "ERROR: Source patch  {{patch_file}}  file not found"
-    when: exsists.stat.readable ==  False
-    ignore_errors: False 
-
+    msg: "ERROR: Source patch  {{patch_file}}  file not found"
+  when: exsists.stat.readable ==  False
+   
 - name : unzip the patch
   unarchive:
     src: "{{patch_file}}"
