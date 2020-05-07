@@ -25,5 +25,5 @@
      
   roles:
     - { role:  oracle_directories, become: yes, become_user: "{{oracle_user}}" }
-    - { role:  unzip_binaries, become: yes, become_user: "{{oracle_user}}" }
+    - { role: unzip_binaries , become: yes, become_user: "{{oracle_user}}" , unzip_dest: "{{oracle_home}}" }
     - { role: db_binaries_install, become: yes, become_user: "{{oracle_user}}" }
