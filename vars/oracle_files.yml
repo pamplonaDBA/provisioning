@@ -1,11 +1,13 @@
 binaries:
+  - { file: "112040_Linux-x86-64_ICC.tgz",   version: "11.2", type: "rdbms", response_file: "rdbms_binaries_11.2.rsp" }
+  - { file: "121_Linux-x86-64_ICC.tgz",      version: "12.1", type: "rdbms", response_file: "rdbms_binaries_12.1.rsp" }
   - { file: "linuxx64_12201_database.zip",   version: "12.2", type: "rdbms", response_file: "rdbms_binaries_12.2.rsp" }
-  - { file: "LINUX.X64_193000_grid_home.zip", version: "19.3", type: "asm",   response_file: "asm_binaries_19.3.rsp" }
-  - { file: "LINUX.X64_193000_db_home.zip",   version: "19.3", type: "rdbms", response_file: "rdbms_binaries_19.3.rsp" }
+  - { file: "LINUX.X64_193000_grid_home.zip", version: "19c", type: "asm",   response_file: "asm_binaries_19c.rsp" }
+  - { file: "LINUX.X64_193000_db_home.zip",   version: "19c", type: "rdbms", response_file: "rdbms_binaries_19c.rsp" }
 
 PSU:
-  - { version: "19.3", type: "asm",   patch: "29708769", date: "190716", file: "p29708769_190000_Linux-x86-64.zip", description: "Patch 29708769: GI RELEASE UPDATE 19.4.0.0.0 " }
-  - { version: "19.3", type: "rdbms", patch: "29834717", date: "190716", file: "p29834717_190000_Linux-x86-64.zip", description: "Patch 29834717: DATABASE RELEASE UPDATE 19.4.0.0.0" }
+  - { version: "19c", type: "asm",   patch: "29708769", date: "190716", file: "p29708769_190000_Linux-x86-64.zip", description: "Patch 29708769: GI RELEASE UPDATE 19.4.0.0.0 " }
+  - { version: "19c", type: "rdbms", patch: "29834717", date: "190716", file: "p29834717_190000_Linux-x86-64.zip", description: "Patch 29834717: DATABASE RELEASE UPDATE 19.4.0.0.0" }
   - { version: "11.2", type: "rdbms", patch: "29913194", date: "191015", file: "p29913194_112040_Linux-x86-64.zip", description: "Patch 30128197: OJVM PATCH SET UPDATE 12.1.0.2.191015" }
   - { version: "12.1", type: "rdbms", patch: "29918340", date: "191015", file: "p29918340_121020_Linux-x86-64.zip", description: "DATABASE PATCH SET UPDATE 12.1.0.2.191015 (Patch)" }
   - { version: "12.1", type: "rdbms", patch: "30128197", date: "191015", file: "p30128197_121020_Linux-x86-64.zip", description: "OJVM PATCH SET UPDATE 12.1.0.2.191015"}
@@ -13,20 +15,28 @@ PSU:
   - { version: "12.2", type: "rdbms", patch: "30138470", date: "191015", file: "p30138470_122010_Linux-x86-64.zip", description: "DATABASE OCT 2019 RELEASE UPDATE 12.2.0.1.191015 (Patch)"}
   - { version: "12.2", type: "rdbms", patch: "30133625", date: "191015", file: "p30133625_122010_Linux-x86-64.zip", description: "Patch 30133625: OJVM RELEASE UPDATE 12.2.0.1.191015"}
   - { version: "12.2", type: "asm",   patch: "30116802", date: "191015", file: "p30116802_122010_Linux-x86-64.zip", description: "GI OCT 2019 RELEASE UPDATE 12.2.0.1.191015 (System Patch)" }
-  - { version: "19.3", type: "asm",   patch: "30116789", date: "191015", file: "p30116789_190000_Linux-x86-64.zip", description: "Patch 30116789: GI RELEASE UPDATE 19.5.0.0.0" }
-  - { version: "19.3", type: "rdbms", patch: "30125133", date: "191015", file: "p30125133_190000_Linux-x86-64.zip", description: "Patch 30125133: DATABASE RELEASE UPDATE 19.5.0.0.0" }
+  - { version: "19c", type: "asm",   patch: "30116789", date: "191015", file: "p30116789_190000_Linux-x86-64.zip", description: "Patch 30116789: GI RELEASE UPDATE 19.5.0.0.0" }
+  - { version: "19c", type: "rdbms", patch: "30125133", date: "191015", file: "p30125133_190000_Linux-x86-64.zip", description: "Patch 30125133: DATABASE RELEASE UPDATE 19.5.0.0.0" }
   - { version: "12.1", type: "asm",   patch: "30464119", date: "200114", file: "p30464119_121020_Linux-x86-64.zip", description: "Patch 30464119: GRID INFRASTRUCTURE PATCH SET UPDATE 12.1.0.2.200114" }
   - { version: "11.2", type: "rdbms", patch: "30298532", date: "200114", file: "p30298532_112040_Linux-x86-64.zip", description: "Patch 30298532: DATABASE PATCH SET UPDATE 11.2.0.4.200114" }
   - { version: "11.2", type: "rdbms", patch: "30503372", date: "200114", file: "p30503372_112040_Linux-x86-64.zip", description: "Patch 30503372: OJVM PATCH SET UPDATE 11.2.0.4.200114" }
   - { version: "12.1", type: "rdbms", patch: "30340202", date: "200114", file: "p30340202_121020_Linux-x86-64.zip", description: "Patch 30340202: DATABASE PATCH SET UPDATE 12.1.0.2.200114" }
   - { version: "12.1", type: "rdbms", patch: "30502041", date: "200114", file: "p30502041_121020_Linux-x86-64.zip", description: "Patch 30502041: OJVM PATCH SET UPDATE 12.1.0.2.200114" }
   - { version: "12.1", type: "asm",   patch: "30805421", date: "200114", file: "p30805421_121020_Linux-x86-64.zip", description: "Patch 30805421: GRID INFRASTRUCTURE PATCH SET UPDATE 12.1.0.2.200414" } 
+  - { version: "11.2", type: "rdbms", patch: "30670774", date: "200414", file: "p30670774_112040_Linux-x86-64.zip", description: "Patch 30670774: DATABASE PATCH SET UPDATE 11.2.0.4.200414" }
+  - { version: "12.1", type: "asm",   patch: "30805421", date: "200414", file: "p30805421_121020_Linux-x86-64.zip", description: "Patch 30805421: GRID INFRASTRUCTURE PATCH SET UPDATE 12.1.0.2.200414" }
+  - { version: "12.1", type: "rdbms", patch: "30700212", date: "200414", file: "p30700212_121020_Linux-x86-64.zip", description: "Patch 30700212: DATABASE PATCH SET UPDATE 12.1.0.2.200414" }
+  - { version: "12.1", type: "rdbms", patch: "30805558", date: "200414", file: "p30805558_121020_Linux-x86-64.zip", description: "Patch 30805558: OJVM PATCH SET UPDATE 12.1.0.2.200414" } 
+  - { version: "19c", type:  "asm"  , patch: "30899722", date: "200414", file: "p30899722_190000_Linux-x86-64.zip", description: "Patch 30899722: GI RELEASE UPDATE 19.7.0.0.0" }
+ 
 
 SCRIPTS: 
-  - { file: "script1.sh",      path: "/" }
-  - { file: "hosekeeping.sh",  path: "/" } 
-  - { file: "rman_backup.sh",   path: "/backup/" } 
-  - { file: "expdp_backup.sh",  path: "/backup/" } 
+  - { file: "ora_envsel_new.sh", srcpath: "scripts" ,dstpath: "{{oracle_scripts_dir}}"  }
+  - { file: " ora_trace.sh.sh",  srcpath: "scripts" ,dstpath: "{{oracle_scripts_dir}}"  }
+  - { file: "housekeeping.sh",   srcpath: "scripts", dstpath: "{{oracle_scripts_dir}}"  }
+  - { file: "register_db.sh",    srcpath: "scripts", dstpath: "{{oracle_scripts_dir}}"  }
+  - { file: "rman_backup.sh",    srcpath: "scripts", dstpath: "{{oracle_scripts_dir}}"  }
+  - { file: "export_backup.sh",  srcpath: "scripts", dstpath: "{{oracle_scripts_dir}}"  }
  
 
 

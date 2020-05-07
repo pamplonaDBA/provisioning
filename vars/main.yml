@@ -1,15 +1,14 @@
-ansible_user:                   "svcautoope"
+ansible_user:                   "ansible"
 root_user:                      "root"
 oracle_user:                    "oracle"
 oracle_uid:                     "500"
 oracle_gid:                     "500"
 oracle_group:                   "dba"
 oracle_user_home:               "/home/oracle"
-media_dir:                      "/mnt/media"
+media_dir:                      "/u01/ansible_/media"
 root_directory:                 "/u01/app"
 oracle_inventory:               "{{root_directory}}/oraInventory"
 oracle_base:                    "{{root_directory}}/oracle"
-oracle_oem_home:                 "{{oracle_base}}/product/em13c"
 stage_directory:                "{{oracle_base}}/stage"
 oracle_hostname:                "{{ ansible_hostname|upper }}"
 oracle_scripts_dir:             "{{oracle_user_home}}/scripts"
@@ -20,14 +19,15 @@ oracle_home_directory:
 response_file:                  "{{type}_{{action}}_{{version}}.rsp"
 data_location:          
  FS:                            "/oradata/{{SID}}/data"
- ASM:                           "{{oracle_hostname}}_DATA"
+ ASM:                           "+{{oracle_hostname}}_DATA"
 fra_location:
   FS:                           "/oradata/{{SID}}/data"
-  ASM:                          "{{oracle_hostname}}_FRA"
+  ASM:                          "+{{oracle_hostname}}_FRA"
 redo1_location:
   FS:                           "/oradata/{{SID}}/redo"
-  ASM:                          "{{oracle_hostname}}_REDO1"
+  ASM:                          "+{{oracle_hostname}}_REDO1"
 redo2_location:
   FS:                           "/oradata/{{SID}}/redo"
-  ASM:                          "{{oracle_hostname}}_REDO2"
+  ASM:                          "+{{oracle_hostname}}_REDO2"
+oracle_oem_home:                 "{{oracle_base}}/product/em13c"
 

@@ -1,10 +1,9 @@
 # Pamplona 2019 
-#  Playbook which installs crs, configure ASM disks and create asm instance
+#  Playbook which check the S.O compliance (directories)
 #  
 #  requires
 #   host: hostname to apply the kaybook which should be inventoried
 #    env:                             name of the server  which should be in the inventory
-#    req:                             number of request 
 #    vars/oracle_standard.yaml        configuration file with all the deppartment values
 #    vars/oracle_files.yaml           configuration file with all the  binarie locations
 ---
@@ -26,13 +25,13 @@
      when:  item  is not defined
      with_items:
       - env 
-      - req
+    
           
   roles:
     - role: check_sid
       vars:
         sid: +ASM
     - { role: oracle_directories , become: yes, become_user: "{{oracle_user}}" }
-    - { role: unzip_binaries , become: yes, become_user: "{{oracle_user}}" , unzip_dest: "{{oracle_home}}" }
-    - { role: asm_binaries_install, become: yes, become_user: "{{oracle_user}}" }
+   
+   
   
