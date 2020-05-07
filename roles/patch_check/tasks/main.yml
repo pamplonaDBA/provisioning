@@ -26,14 +26,14 @@
 
 - name: minimm version 
   shell: "{{oracle_home}}/Opatch/opatch rereq CheckMinimumOPatchVersion  -phBaseDir {{stage_directory}}/{{patch}}"
-    args:
-      chdir: "{{ oracle_home }}"
-    environment:
-       CV_ASSUME_DISTID: OEL7.6
-       ORACLE_HOME: "{{ oracle_home }}"
-       PATH: "$PATH:{{ oracle_home }}/bin"
-       LIBPATH: "$LIBPATH:{{ oracle_home }}/lib:{{ oracle_home }}/ctx/lib"
-       LD_LIBRARY_PATH: "$LD_LIBRARY_PATH:{{ oracle_home }}/lib"
+  args:
+    chdir: "{{ oracle_home }}"
+  environment:
+    CV_ASSUME_DISTID: OEL7.6
+    ORACLE_HOME: "{{ oracle_home }}"
+    PATH: "$PATH:{{ oracle_home }}/bin"
+    LIBPATH: "$LIBPATH:{{ oracle_home }}/lib:{{ oracle_home }}/ctx/lib"
+    LD_LIBRARY_PATH: "$LD_LIBRARY_PATH:{{ oracle_home }}/lib"
   register: opatch_output
   tags: opatch_version
 
@@ -41,12 +41,12 @@
   shell:
   command: "{{oracle_home}}/Opatch/opatch prereq CheckConflictAgainstOHWithDetail -ph {{stage_directory}}/{{patch}}"
   args:
-      chdir: "{{ oracle_home }}"
+    chdir: "{{ oracle_home }}"
   environment:
-       CV_ASSUME_DISTID: OEL7.6
-       ORACLE_HOME: "{{ oracle_home }}"
-       PATH: "$PATH:{{ oracle_home }}/bin"
-       LIBPATH: "$LIBPATH:{{ oracle_home }}/lib:{{ oracle_home }}/ctx/lib"
-       LD_LIBRARY_PATH: "$LD_LIBRARY_PATH:{{ oracle_home }}/lib"
+    CV_ASSUME_DISTID: OEL7.6
+    ORACLE_HOME: "{{ oracle_home }}"
+    PATH: "$PATH:{{ oracle_home }}/bin"
+    LIBPATH: "$LIBPATH:{{ oracle_home }}/lib:{{ oracle_home }}/ctx/lib"
+    LD_LIBRARY_PATH: "$LD_LIBRARY_PATH:{{ oracle_home }}/lib"
   register: opatch_output
   tags: opatch_conflicts
