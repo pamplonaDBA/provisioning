@@ -36,7 +36,7 @@ SCRIPTS:
   - { file: "housekeeping.sh",   srcpath: "scripts", dstpath: "{{oracle_scripts_dir}}"  }
   - { file: "register_db.sh",    srcpath: "scripts", dstpath: "{{oracle_scripts_dir}}"  }
   - { file: "rman_backup.sh",    srcpath: "scripts", dstpath: "{{oracle_scripts_dir}}"  }
-  - { file: "export_backup.sh",  srcpath: "scripts", dstpath: "{{oracle_scripts_dir}}"  }
+  - { file: "expdp_backup.sh",  srcpath: "scripts", dstpath: "{{oracle_scripts_dir}}"  }
  
 
 

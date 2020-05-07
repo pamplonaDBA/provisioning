@@ -32,7 +32,7 @@
       - "{{ oracle_scripts_dir }}/rman"
       - "{{ oracle_logs_dir }}"
       - "{{ stage_directory }}"
-      - "{{media_dir}}"
+      - "{{ media_dir }}"
     ignore_errors: no
     tags:
       - create_directories
