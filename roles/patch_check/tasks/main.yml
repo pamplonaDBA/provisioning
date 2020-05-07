@@ -7,7 +7,7 @@
   set_fact:
      patch_file: "{{media_dir}}/PSU/{{version}}/{{type}}/{{item.file}}"
   with_items: "{{PSU}}"
-  when:  item.version == "{{version}}"  and  item.type == "{{type}}" and item.patch="{{patch}}"
+  when:  item.version == "{{version}}"  and  item.type == "{{type}}" and item.patch=="{{patch}}"
 
 - name: look for the patch 
   stat:
