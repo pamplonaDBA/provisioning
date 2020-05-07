@@ -31,7 +31,6 @@
       - "{{ oracle_scripts_dir }}"
       - "{{ oracle_scripts_dir }}/rman"
       - "{{ oracle_logs_dir }}"
-      - "{{oracle_ansible_logs_dir}}"
       - "{{ stage_directory }}"
       - "{{media_dir}}"
     ignore_errors: no
