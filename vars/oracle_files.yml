@@ -32,7 +32,6 @@ PSU:
 
 SCRIPTS: 
   - { file: "ora_envsel_new.sh", srcpath: "scripts" ,dstpath: "{{oracle_scripts_dir}}"  }
-  - { file: " ora_trace.sh.sh",  srcpath: "scripts" ,dstpath: "{{oracle_scripts_dir}}"  }
   - { file: "housekeeping.sh",   srcpath: "scripts", dstpath: "{{oracle_scripts_dir}}"  }
   - { file: "register_db.sh",    srcpath: "scripts", dstpath: "{{oracle_scripts_dir}}"  }
   - { file: "rman_backup.sh",    srcpath: "scripts", dstpath: "{{oracle_scripts_dir}}"  }

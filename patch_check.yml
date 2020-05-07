@@ -1,0 +1,40 @@
+# Pamplona 2019 
+#  Playbook which check the S.O compliance (directories)
+#  
+#  requires
+#    env:                            name of the server  which should be in the inventory
+#    binaries_route:                 ORACLE_HOME we want to check
+#    type:                          type of installation [rdbms|asm]
+#    version                        version of the installation  [11.2|12.1|12.2|19c]
+#    patch                          patch number                            
+#    vars/oracle_standard.yaml       configuration file with all the deppartment values
+#    vars/oracle_files.yaml          configuration file with all the  binarie locations
+---
+- hosts: "{{ env }}"
+  vars:
+    type: asm 
+  vars_files:
+    - "vars/main.yml"
+    - "vars/oracle_files.yml"
+  remote_user: "{{ansible_user}}"
+  
+  pre_tasks:
+  # Checking if we have the required variables
+   - fail: 
+        msg: | 
+         ERROR:   please check variables:
+             env:   name of the server  which should be in the inventory
+             req:    number of request for the backout  
+     when:  item  is not defined
+     with_items:
+      - env 
+      - type
+      - verision
+      - patch
+      - binaries_route     
+          
+  roles:
+   - { role: patch_check , become: yes, become_user: "{{oracle_user}}" }
+   
+   
+  
