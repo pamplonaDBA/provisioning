@@ -10,22 +10,22 @@
     include_vars:
      file: "vars/{{ ansible_distribution }}_{{ ansible_distribution_major_version }}_oracle_{{version}}_requisites.yaml"
 
-  #- name: Check if exsists the oracle group
-  #  group:
-  #   name: "{{ oracle_group}}"
-  ##   gid: "{{oracle_gid}}"
-  #  state: present 
-  # ignore_errors: false
-  #  tags: oragroup
+  - name: Check if exsists the oracle group
+    group:
+     name: "{{ oracle_group}}"
+     gid: "{{oracle_gid}}"
+    state: present 
+   ignore_errors: false
+    tags: oragroup
     
-  #- name: Check if exsists the oracle user 
-  #  user:
-  #    name: "{{oracle_user}}"
-  #    uid:  "{{oracle_uid}}"  
-  #    group: "{{oracle_group}}"
-  #    shell: /bin/bash
-  #  ignore_errors: false  
-  #  tags: orauser    
+  - name: Check if exsists the oracle user 
+    user:
+      name: "{{oracle_user}}"
+      uid:  "{{oracle_uid}}"  
+      group: "{{oracle_group}}"
+      shell: /bin/bash
+    ignore_errors: false  
+    tags: orauser    
     
 
   - name: check required S.O packages
@@ -97,3 +97,15 @@
      policy: targeted
      state: disabled
     tags: SELinux
+
+  - name: create  ansible facts  directories
+      path: "{{ item }}"
+      state: directory
+      owner: "{{ansible_user }}"
+      group: "{{ oracle_group }}"
+      mode: '0775'
+    with_items:
+      - /etc/ansible
+      - /etc/ansible/facts.d   
+    tags:
+      - facts_directories
