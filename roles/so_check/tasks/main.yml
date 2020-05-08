@@ -105,8 +105,7 @@
     with_items:
       - /etc/ansible
       - /etc/ansible/facts.d   
-    tags:
-      - facts_directories
+    tags: facts_directories
       
   - name:  grants permssions to /u01
     file:
@@ -116,3 +115,12 @@
       group: "{{ oracle_group }}"
       mode: '0775' 
     tags: u01
+  
+  - name:  grants permssions to /u01/app
+    file:
+      path: "/u01/app"
+      state: directory
+      owner: "{{oracle_user }}"
+      group: "{{ oracle_group }}"
+      mode: '0775' 
+    tags: app
