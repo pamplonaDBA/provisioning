@@ -115,3 +115,4 @@
       owner: "{{oracle_user }}"
       group: "{{ oracle_group }}"
       mode: '0775' 
+    tags: u01
