@@ -8,7 +8,7 @@
 ---
   - name: "Including So {{version}} requisites"
     include_vars:
-     file: "vars/{{ ansible_distribution }}_{{ ansible_distribution_major_version }}_oracle_{{version}}_requisites.yaml"
+     file: "vars/{{ ansible_distribution }}_{{ ansible_distribution_major_version }}_oracle_{{version}}_requisites.yml"
 
  # - name: Check if exsists the oracle group
  #   group:
