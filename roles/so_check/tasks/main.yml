@@ -109,7 +109,7 @@
       - facts_directories
       
   - name:  grants permssions to /u01
-     path: "/u01"
+    path: "/u01"
       state: directory
       owner: "{{oracle_user }}"
       group: "{{ oracle_group }}"
