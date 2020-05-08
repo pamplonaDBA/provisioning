@@ -107,3 +107,10 @@
       - /etc/ansible/facts.d   
     tags:
       - facts_directories
+      
+  - name:  grants permssions to /u01
+     path: "{{ item }}"
+      state: directory
+      owner: "{{oracle_user }}"
+      group: "{{ oracle_group }}"
+      mode: '0775' 
