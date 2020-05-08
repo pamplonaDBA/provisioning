@@ -14,20 +14,17 @@
     group:
      name: "{{ oracle_group}}"
      gid: "{{oracle_gid}}"
-    state: present 
-   ignore_errors: false
+     state: present 
     tags: oragroup
-    
+            
   - name: Check if exsists the oracle user 
     user:
       name: "{{oracle_user}}"
       uid:  "{{oracle_uid}}"  
       group: "{{oracle_group}}"
       shell: /bin/bash
-    ignore_errors: false  
     tags: orauser    
-    
-
+            
   - name: check required S.O packages
     yum:
      name:  "{{package_name}}"
@@ -41,7 +38,7 @@
       force: no
       owner: root
       group: root
-      mode: 0644
+      mode: '0644'
         
   - name : Set required Kernel values
     sysctl:
@@ -70,7 +67,7 @@
       force: no
       owner: root
       group: root
-      mode: 0644
+      mode: '0644'
     tags: limits_file
 
      
@@ -99,6 +96,7 @@
     tags: SELinux
 
   - name: create  ansible facts  directories
+    file:
       path: "{{ item }}"
       state: directory
       owner: "{{ansible_user }}"
