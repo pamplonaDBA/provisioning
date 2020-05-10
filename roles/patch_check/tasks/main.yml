@@ -32,6 +32,16 @@
     msg: "ERROR: Source patch  {{patch_file}}  file not found"
   when: exsists.stat.readable ==  False
    
+
+- name: Cleaning old patch versions  
+  file:
+    state: absent
+    recurse: yes
+    path: "{{stage_directory}}/{{patch}}"
+  
+  ignore_errors: yes 
+ 
+
 - name : unzip the patch
   unarchive:
     src: "{{patch_file}}"
