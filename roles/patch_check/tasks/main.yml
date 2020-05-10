@@ -3,11 +3,25 @@
 #   
 
 ---
+
+- name: setting LOG variable
+  set_fact:
+      logfile: "{{oracle_logs_dir}}/{{ ansible_date_time.date}}:{{ansible_date_time.time}}_{{patch_check}}_by_ANSIBLE.log"
+
 - name: patch full file 
   set_fact:
      patch_file: "{{media_dir}}/PSU/{{version}}/{{type}}/{{item.file}}"
   with_items: "{{PSU}}"
   when:  item.version == "{{version}}"  and  item.type == "{{type}}" and item.patch=="{{patch}}"
+
+- name: logging patch info 
+  blockinfile:
+   path: "{{logfile}}"
+   marker: ""  
+   insertafter: EOF
+   block: |
+          #===============================  {{patch}} ======================================
+           Checking patch {{patch}}  against ORACLE HOME {{oracle_home}} file {{patch_file}}
 
 - name: look for the patch 
   stat:
@@ -25,7 +39,7 @@
     dest: "{{stage_directory}}"
 
 - name: Check opatch version  
-  shell: "{{oracle_home}}/OPatch/opatch rereq CheckMinimumOPatchVersion  -phBaseDir {{stage_directory}}/{{patch}}"
+  shell: "{{oracle_home}}/OPatch/opatch prereq CheckMinimumOPatchVersion  -phBaseDir {{stage_directory}}/{{patch}}"
   args:
     chdir: "{{ oracle_home }}"
   environment:
@@ -34,8 +48,21 @@
     PATH: "$PATH:{{ oracle_home }}/bin"
     LIBPATH: "$LIBPATH:{{ oracle_home }}/lib:{{ oracle_home }}/ctx/lib"
     LD_LIBRARY_PATH: "$LD_LIBRARY_PATH:{{ oracle_home }}/lib"
-  register: opatch_output
+  register: command_output
   tags: opatch_version
+
+- name: logging opatch version 
+  blockinfile:
+   path: "{{logfile}}"
+   marker: ""  
+   insertafter: EOF
+   block: |
+           command :
+           {{command_output.cmd}}
+           output :
+           {{command_output.stdout}}
+           error :
+           {{command_output.stderr}}
 
 - name: check opatch conflics
   shell: "{{oracle_home}}/OPatch/opatch prereq CheckConflictAgainstOHWithDetail -ph {{stage_directory}}/{{patch}}"
@@ -49,3 +76,16 @@
     LD_LIBRARY_PATH: "$LD_LIBRARY_PATH:{{ oracle_home }}/lib"
   register: opatch_output
   tags: opatch_conflicts
+
+- name: logging opatch version 
+  blockinfile:
+   path: "{{logfile}}"
+   marker: ""  
+   insertafter: EOF
+   block: |
+           command :
+           {{command_output.cmd}}
+           output :
+           {{command_output.stdout}}
+           error :
+           {{command_output.stderr}}
