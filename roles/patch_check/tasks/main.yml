@@ -41,13 +41,52 @@
     msg: "ERROR: Source patch  {{patch_file}}  file not found"
   when: exsists.stat.readable ==  False
    
+- name: Current patches   
+  shell: "{{oracle_home}}/OPatch/opatch lsinventory"
+  args:
+    chdir: "{{ oracle_home }}"
+  environment:
+    CV_ASSUME_DISTID: OEL7.6
+    ORACLE_HOME: "{{ oracle_home }}"
+    PATH: "$PATH:{{ oracle_home }}/bin:{{oracle_home}}/OPatch/" 
+    LIBPATH: "$LIBPATH:{{ oracle_home }}/lib:{{ oracle_home }}/ctx/lib"
+    LD_LIBRARY_PATH: "$LD_LIBRARY_PATH:{{ oracle_home }}/lib"
+  register: command_output
+  tags: current_patches 
+
+- name: logging patches  
+  blockinfile:
+   path: "{{logfile}}"
+   marker: ""  
+   insertafter: EOF
+   block: |
+           command :
+           {{command_output.cmd}}
+           output :
+           {{command_output.stdout}}
+           error :
+           {{command_output.stderr}}
+ 
 
 - name: Cleaning old patch versions  
   file:
     state: absent
-    path: "{{stage_directory}}/{{patch}}"/
+    path: "{{stage_directory}}/{{patch}}/"
   ignore_errors: yes 
- 
+
+- name: Check opatch version  
+  shell: "{{oracle_home}}/OPatch/opatch prereq CheckMinimumOPatchVersion  -phBaseDir {{stage_directory}}/{{patch}}"
+  args:
+    chdir: "{{ oracle_home }}"
+  environment:
+    CV_ASSUME_DISTID: OEL7.6
+    ORACLE_HOME: "{{ oracle_home }}"
+    PATH: "$PATH:{{ oracle_home }}/bin:{{oracle_home}}/OPatch/"
+    LIBPATH: "$LIBPATH:{{ oracle_home }}/lib:{{ oracle_home }}/ctx/lib"
+    LD_LIBRARY_PATH: "$LD_LIBRARY_PATH:{{ oracle_home }}/lib"
+  register: command_output
+  tags: opatch_version
+
 
 - name : unzip the patch
   unarchive:
@@ -62,11 +101,13 @@
   environment:
     CV_ASSUME_DISTID: OEL7.6
     ORACLE_HOME: "{{ oracle_home }}"
-    PATH: "$PATH:{{ oracle_home }}/bin"
+    PATH: "$PATH:{{ oracle_home }}/bin:{{oracle_home}}/OPatch/"
     LIBPATH: "$LIBPATH:{{ oracle_home }}/lib:{{ oracle_home }}/ctx/lib"
     LD_LIBRARY_PATH: "$LD_LIBRARY_PATH:{{ oracle_home }}/lib"
   register: command_output
   tags: opatch_version
+
+
 
 - name: logging opatch version 
   blockinfile:
@@ -88,7 +129,7 @@
   environment:
     CV_ASSUME_DISTID: OEL7.6
     ORACLE_HOME: "{{ oracle_home }}"
-    PATH: "$PATH:{{ oracle_home }}/bin"
+    PATH: "$PATH:{{ oracle_home }}/bin:{{oracle_home}}/OPatch/"
     LIBPATH: "$LIBPATH:{{ oracle_home }}/lib:{{ oracle_home }}/ctx/lib"
     LD_LIBRARY_PATH: "$LD_LIBRARY_PATH:{{ oracle_home }}/lib"
   register: opatch_output
