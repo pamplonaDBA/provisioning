@@ -6,7 +6,7 @@
 
 - name: setting LOG variable
   set_fact:
-      logfile: "{{oracle_logs_dir}}/{{ ansible_date_time.date}}:{{ansible_date_time.time}}_{{patch_check}}_by_ANSIBLE.log"
+      logfile: "{{oracle_logs_dir}}/{{ ansible_date_time.date}}:{{ansible_date_time.time}}_patch_check_by_ANSIBLE.log"
 
 - name: patch full file 
   set_fact:
