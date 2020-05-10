@@ -42,9 +42,9 @@
   when: exsists.stat.readable ==  False
    
 - name: Current patches   
-  shell: "{{oracle_home}}/OPatch/opatch lsinventory"
+  shell: "opatch lsinventory"
   args:
-    chdir: "{{ oracle_home }}"
+    chdir: "{{ oracle_home }}/OPatch"
   environment:
     CV_ASSUME_DISTID: OEL7.6
     ORACLE_HOME: "{{ oracle_home }}"
@@ -77,7 +77,7 @@
 - name: Check opatch version  
   shell: "{{oracle_home}}/OPatch/opatch prereq CheckMinimumOPatchVersion  -phBaseDir {{stage_directory}}/{{patch}}"
   args:
-    chdir: "{{ oracle_home }}"
+     chdir: "{{ oracle_home }}/OPatch"
   environment:
     CV_ASSUME_DISTID: OEL7.6
     ORACLE_HOME: "{{ oracle_home }}"
