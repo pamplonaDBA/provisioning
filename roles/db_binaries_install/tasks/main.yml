@@ -29,7 +29,7 @@
     ignore_errors: True
  
 
-  - name: Checking inf installation is OK 
+  - name: Checking if installation is OK 
     fail:
       msg: |
        ERROR: Oracle "{{version}}" binaries install failed

@@ -31,8 +31,17 @@
       ORACLE_HOME: "{{ oracle_home }}"
       GI_HOME: "{{ oracle_home }}"
       ORACLE_BASE: "{{ oracle_base}}"
+    register: install_output  
     ignore_errors: yes
-    
+  
+  - name: Checking if installation is OK 
+    fail:
+      msg: |
+       ERROR: Grid infrastructure  "{{version}}" binaries install failed
+       check 
+       {{install_output.stdout}}
+    when: '"Successfully Setup Software"  not in install_output.stdout ' 
+
 ##OraInventory 
   - name: "checking if exsists {{ oracle_inventory }}/orainstRoot.sh"
     stat:
@@ -77,7 +86,7 @@
                 SQLNET.EXPIRE_TIME= 10
                 SQLNET.INBOUND_CONNECT_TIMEOUT=60        
     tags: sqlnet
-    
+
   - name: Create listener
     shell: "$GI_HOME/bin/srvctl add listener -listener LISTENER  -oraclehome  {{ oracle_home }}" 
     args:
