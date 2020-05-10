@@ -46,7 +46,6 @@
   file:
     state: absent
     path: "{{stage_directory}}/{{patch}}"/
-  
   ignore_errors: yes 
  
 
