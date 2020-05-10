@@ -45,8 +45,7 @@
 - name: Cleaning old patch versions  
   file:
     state: absent
-    recurse: yes
-    path: "{{stage_directory}}/{{patch}}"
+    path: "{{stage_directory}}/{{patch}}"/
   
   ignore_errors: yes 
  
