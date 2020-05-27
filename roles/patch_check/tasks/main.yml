@@ -42,7 +42,7 @@
   when: exsists.stat.readable ==  False
    
 - name: Current patches   
-  shell: "{{ oracle_home }}/OPatch/opatch lsinventory"
+  shell: "echo $PATH; {{ oracle_home }}/OPatch/opatch lsinventory"
   args:
     chdir: "{{ oracle_home }}/OPatch"
   environment:
@@ -53,8 +53,6 @@
     LD_LIBRARY_PATH: "$LD_LIBRARY_PATH:{{ oracle_home }}/lib"
   register: command_output
   tags: current_patches 
-  become: yes
-  become_user: oracle 
 
 - name: logging patches  
   blockinfile:
