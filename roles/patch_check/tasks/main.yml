@@ -42,7 +42,7 @@
   when: exsists.stat.readable ==  False
    
 - name: Current patches   
-  shell: "opatch lsinventory"
+  shell: "{{ oracle_home }}/OPatch/opatch lsinventory"
   args:
     chdir: "{{ oracle_home }}/OPatch"
   environment:
