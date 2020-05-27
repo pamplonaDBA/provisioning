@@ -75,7 +75,7 @@
   ignore_errors: yes 
 
 - name: Check opatch version  
-  shell: "{{oracle_home}}/OPatch/opatch prereq CheckMinimumOPatchVersion  -phBaseDir {{stage_directory}}/{{patch}}"
+  shell: "{{oracle_home}}/OPatch/opatch prereq CheckMinimumOPatchVersion  -ph {{stage_directory}}/{{patch}}"
   args:
      chdir: "{{ oracle_home }}/OPatch"
   environment:
@@ -95,7 +95,7 @@
     dest: "{{stage_directory}}"
 
 - name: Check opatch version  
-  shell: "{{oracle_home}}/OPatch/opatch prereq CheckMinimumOPatchVersion  -phBaseDir {{stage_directory}}/{{patch}}"
+  shell: "{{oracle_home}}/OPatch/opatch prereq CheckMinimumOPatchVersion  -ph {{stage_directory}}/{{patch}}"
   args:
     chdir: "{{ oracle_home }}"
   environment:
