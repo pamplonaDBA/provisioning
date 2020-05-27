@@ -53,6 +53,8 @@
     LD_LIBRARY_PATH: "$LD_LIBRARY_PATH:{{ oracle_home }}/lib"
   register: command_output
   tags: current_patches 
+  become: yes
+  become_user: oracle 
 
 - name: logging patches  
   blockinfile:
