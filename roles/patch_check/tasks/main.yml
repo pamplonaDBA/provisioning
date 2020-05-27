@@ -40,7 +40,16 @@
 - fail:
     msg: "ERROR: Source patch  {{patch_file}}  file not found"
   when: exsists.stat.readable ==  False
-   
+
+
+## falta unzip  
+- name:  "Extract {{patch_file}}  {{ stage_directory }}"
+    unarchive:
+      src: "{{patch_file}}"
+      remote_src: yes
+      dest: "{{ stage_directory }}"
+
+
 - name: Current patches   
   shell: "echo $PATH; {{ oracle_home }}/OPatch/opatch lsinventory"
   args:
