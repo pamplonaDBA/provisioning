@@ -1,0 +1,14 @@
+# Pamplona 2019 
+#   Playbook which gather facts of the services running a the server 
+#  it requires  a directory called /etc/ansible/facts.d
+#  with perms    
+#  drwxrwxr-x 2 svcautoope@res01.unicc.org dba
+---
+- hosts: "{{env}}"
+  vars_files:
+    - "vars/main.yml"
+  become: yes
+  become_user: "{{ansible_user}}"
+  
+  roles:
+    - { role: create_facts }

@@ -1,0 +1,9 @@
+# Pamplona 2019 
+#   Role which  gather facts of the services running a the server 
+#  it requires  a directory called /etc/ansible/facts.d
+#  with perms    
+#  drwxrwxr-x 2 svcautoope@res01.unicc.org dba
+---
+- name: gather local facts 
+  script: files/create_facts.sh
+ 
