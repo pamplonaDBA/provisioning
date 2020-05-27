@@ -44,11 +44,10 @@
 
 ## falta unzip  
 - name:  "Extract {{patch_file}}  {{ stage_directory }}"
-    unarchive:
-      src: "{{patch_file}}"
-      remote_src: yes
-      dest: "{{ stage_directory }}"
-
+  unarchive:
+    src: "{{patch_file}}"
+    remote_src: yes
+    dest: "{{ stage_directory }}"
 
 - name: Current patches   
   shell: "echo $PATH; {{ oracle_home }}/OPatch/opatch lsinventory"
@@ -95,7 +94,6 @@
     LD_LIBRARY_PATH: "$LD_LIBRARY_PATH:{{ oracle_home }}/lib"
   register: command_output
   tags: opatch_version
-
 
 - name : unzip the patch
   unarchive:
