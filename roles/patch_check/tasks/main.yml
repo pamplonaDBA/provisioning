@@ -101,7 +101,7 @@
   environment:
     CV_ASSUME_DISTID: OEL7.6
     ORACLE_HOME: "{{ oracle_home }}"
-    PATH: "$PATH:{{ oracle_home }}/bin:{{oracle_home}}/OPatch/"
+    PATH: "$PATH:{{ oracle_home }}/bin:{{oracle_home}}/OPatch/:/usr/bin:/bin"
     LIBPATH: "$LIBPATH:{{ oracle_home }}/lib:{{ oracle_home }}/ctx/lib"
     LD_LIBRARY_PATH: "$LD_LIBRARY_PATH:{{ oracle_home }}/lib"
   register: command_output
@@ -129,7 +129,7 @@
   environment:
     CV_ASSUME_DISTID: OEL7.6
     ORACLE_HOME: "{{ oracle_home }}"
-    PATH: "$PATH:{{ oracle_home }}/bin:{{oracle_home}}/OPatch/"
+    PATH: "$PATH:{{ oracle_home }}/bin:{{oracle_home}}/OPatch/:/usr/bin:/bin"
     LIBPATH: "$LIBPATH:{{ oracle_home }}/lib:{{ oracle_home }}/ctx/lib"
     LD_LIBRARY_PATH: "$LD_LIBRARY_PATH:{{ oracle_home }}/lib"
   register: opatch_output
