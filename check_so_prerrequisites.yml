@@ -18,10 +18,12 @@
    - fail: 
         msg: | 
          ERROR :   please check variables:
-         env :   name of the server  which should be in the inventory           
+         env :   name of the server  which should be in the inventory   
+         verision: version of oracle to install        
      when:  item  is not defined
      with_items:
       - env 
+      - version 
       
   roles:
   - { role: so_check ,become: yes, become_user: "{{root_user}}" }
