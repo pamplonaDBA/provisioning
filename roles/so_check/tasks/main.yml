@@ -25,15 +25,15 @@
       group: "{{oracle_group}}"
       shell: /bin/bash
   tags: orauser    
-            
+
 - name: check required S.O packages
   yum:
     name:  "{{package_name}}"
-     state: latest
+    state: latest
   tags: packages   
          
 - name : Set required Kernel values
-  sysctl:
+  sysctl: 
       name: "{{ item.name }}"
       value: "{{item.value}}"
       state: present
@@ -60,8 +60,8 @@
       limit_item: "{{ item.name }}"
       value: "{{item.value}}"
       dest: /etc/security/limits.d/30-oracle.conf
-    with_items: "{{limits}}"
-    tags: limits 
+  with_items: "{{limits}}"
+  tags: limits 
         
 - name: Disable firewall
   service: 
@@ -93,7 +93,7 @@
   mount:
     path: /u01
     state: mounted
- tags: u01_mount 
+  tags: u01_mount 
 
 - name:  grants permssions to /u01
   file:
