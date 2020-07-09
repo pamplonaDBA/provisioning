@@ -6,9 +6,9 @@
 #    vars/oracle_standard.yaml        configuration file with all the deppartment values
 #    vars/[Distribution]_[major_version}_oracle_[version]_requisites.yaml        configuration file with the packages required for this version of the software
 ---
-  - name: "Including So {{version}} requisites"
-    include_vars:
-     file: "vars/{{ ansible_distribution }}_{{ ansible_distribution_major_version }}_oracle_{{version}}_requisites.yml"
+- name: "Including So {{version}} requisites"
+  include_vars:
+  file: "vars/{{ ansible_distribution }}_{{ ansible_distribution_major_version }}_oracle_{{version}}_requisites.yml"
 
 - name: Check if exsists the oracle group
   group:
