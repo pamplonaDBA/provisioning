@@ -10,69 +10,50 @@
     include_vars:
      file: "vars/{{ ansible_distribution }}_{{ ansible_distribution_major_version }}_oracle_{{version}}_requisites.yml"
 
- # - name: Check if exsists the oracle group
- #   group:
- #    name: "{{ oracle_group}}"
- #    gid: "{{oracle_gid}}"
- #    state: present 
- #   tags: oragroup
- #           
- # - name: Check if exsists the oracle user 
- #   user:
- #     name: "{{oracle_user}}"
- #     uid:  "{{oracle_uid}}"  
- #     group: "{{oracle_group}}"
- #     shell: /bin/bash
- #   tags: orauser    
+- name: Check if exsists the oracle group
+  group:
+     name: "{{ oracle_group}}"
+     gid: "{{oracle_gid}}"
+     state: present 
+  tags: oragroup
             
-  - name: check required S.O packages
-    yum:
-     name:  "{{package_name}}"
+- name: Check if exsists the oracle user 
+  user:
+      name: "{{oracle_user}}"
+      uid:  "{{oracle_uid}}"
+      comment: Oracle database user  
+      group: "{{oracle_group}}"
+      shell: /bin/bash
+  tags: orauser    
+            
+- name: check required S.O packages
+  yum:
+    name:  "{{package_name}}"
      state: latest
-    tags: packages   
-            
-  - name: create oracle /etc/sysctl.d/30-oracle.conf  sysctl file
-    copy: 
-      dest: /etc/sysctl.d/30-oracle.conf
-      content: "#Oracle specific sysctl values"
-      force: no
-      owner: root
-      group: root
-      mode: '0644'
-        
-  - name : Set required Kernel values
-    sysctl:
+  tags: packages   
+         
+- name : Set required Kernel values
+  sysctl:
       name: "{{ item.name }}"
       value: "{{item.value}}"
       state: present
       sysctl_set: yes
       sysctl_file: /etc/sysctl.d/30-oracle.conf
-    with_items: "{{kernel_values}}"
-    tags: sysctl
+  with_items: "{{kernel_values}}"
+  tags: sysctl
 
-  ##We execute Huge Pages separately
-  - name: Set Huge pages
-    sysctl:
+# We execute Huge Pages separately
+- name: Set Huge pages
+  sysctl:
         name: vm.nr_hugepages
         value: "{{huge_pages}}"  
         sysctl_set: yes
         state: present
         sysctl_file: /etc/sysctl.d/30-oracle.conf     
-    tags: huge_pages
+  tags: huge_pages
     
-  - name: create oracle limits file
-    copy: 
-      dest: /etc/security/limits.d/30-oracle.conf
-      content: "#Oracle specific limit file"
-      force: no
-      owner: root
-      group: root
-      mode: '0644'
-    tags: limits_file
-
-     
-  - name: Set  user Limits 
-    pam_limits:
+- name: Set  user Limits 
+  pam_limits:
       domain: oracle
       use_max: yes
       limit_type: "{{ item.tipo }}"
@@ -82,45 +63,52 @@
     with_items: "{{limits}}"
     tags: limits 
         
-  - name: Disable firewall
-    service: 
+- name: Disable firewall
+  service: 
       name: firewalld 
       state: stopped 
       enabled: no
-    tags: firewall
+  tags: firewall
 
-  - name:  disabling SElinux
-    selinux:
+- name:  disabling SElinux
+  selinux:
      policy: targeted
      state: disabled
-    tags: SELinux
+  tags: SELinux
 
-  - name: create  ansible facts  directories
-    file:
+- name: create  ansible facts  directories
+  file:
       path: "{{ item }}"
       state: directory
       owner: "{{ansible_user }}"
       group: "{{ oracle_group }}"
       mode: '0775'
-    with_items:
+  with_items:
       - /etc/ansible
       - /etc/ansible/facts.d   
-    tags: facts_directories
-      
-  - name:  grants permssions to /u01
-    file:
-      path: "/u01"
-      state: directory
-      owner: "{{oracle_user }}"
-      group: "{{ oracle_group }}"
-      mode: '0775' 
-    tags: u01
+  tags: facts_directories
+
+#checking if /u01 is a dedicated mount point)
+- name: Mount and bind a volume
+  mount:
+    path: /u01
+    state: mounted
+ tags: u01_mount 
+
+- name:  grants permssions to /u01
+  file:
+    path: "/u01"
+    state: directory
+    owner: "{{oracle_user }}"
+    group: "{{ oracle_group }}"
+    mode: '0775' 
+  tags: u01
   
-  - name:  grants permssions to /u01/app
-    file:
+- name:  grants permssions to /u01/app
+  file:
       path: "/u01/app"
       state: directory
       owner: "{{oracle_user }}"
       group: "{{ oracle_group }}"
       mode: '0775' 
-    tags: app
+  tags: app
